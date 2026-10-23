@@ -1,26 +1,76 @@
 @import "tailwindcss";
 
-:root {
+/* Tokens del wireframe (claro) y su equivalente oscuro */
+:root,
+[data-theme="light"] {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #333333;
+  --muted: #6b6b6b;
+  --border: #e5e5e5;
+  --border-strong: #d4d4d4;
+  --surface: #f0f0f0;
+  --surface-hover: #f7f7f7;
+  --accent: #333333;
+  --accent-foreground: #ffffff;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --background: #111111;
+  --foreground: #ededed;
+  --muted: #9a9a9a;
+  --border: #2a2a2a;
+  --border-strong: #3a3a3a;
+  --surface: #1c1c1c;
+  --surface-hover: #232323;
+  --accent: #ededed;
+  --accent-foreground: #111111;
+  color-scheme: dark;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --font-sans: var(--font-poppins), system-ui, -apple-system, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+.typewriter-caret {
+  margin-left: 2px;
+  font-weight: 300;
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .typewriter-caret {
+    animation: none;
+  }
 }
