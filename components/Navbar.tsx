@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { profile } from "@/data/profile";
 import ThemeToggle from "./ThemeToggle";
+import { useReducedMotion } from "./useReducedMotion";
 
 const links = [
   { id: "inicio", label: "Inicio" },
@@ -17,6 +18,7 @@ const links = [
 export default function Navbar() {
   const [active, setActive] = useState("inicio");
   const [menuOpen, setMenuOpen] = useState(false);
+  const reduced = useReducedMotion();
 
   // Resalta la sección que cruza el centro del viewport.
   useEffect(() => {
@@ -44,11 +46,25 @@ export default function Navbar() {
   }, [menuOpen]);
 
   const linkClass = (id: string, base: string) =>
-    `${base} transition-colors ${
+    `${base} relative isolate transition-colors ${
       active === id
-        ? "bg-surface font-semibold text-foreground"
+        ? "font-semibold text-foreground"
         : "font-medium text-muted hover:text-foreground"
     }`;
+
+  // Pastilla que se desliza hasta el link de la sección activa.
+  const pill = (id: string, layoutId: string, radius: string) =>
+    active === id && (
+      <motion.span
+        layoutId={layoutId}
+        transition={
+          reduced
+            ? { duration: 0 }
+            : { type: "spring", stiffness: 380, damping: 32 }
+        }
+        className={`absolute inset-0 -z-10 bg-surface ${radius}`}
+      />
+    );
 
   return (
     <header className="fixed top-4 left-1/2 z-50 w-[calc(100%-32px)] max-w-[1160px] -translate-x-1/2">
@@ -71,6 +87,7 @@ export default function Navbar() {
               aria-current={active === l.id ? "true" : undefined}
               className={linkClass(l.id, "rounded-full px-3.5 py-2 text-sm")}
             >
+              {pill(l.id, "nav-pill-desktop", "rounded-full")}
               {l.label}
             </a>
           ))}
@@ -114,6 +131,7 @@ export default function Navbar() {
                   "rounded-[10px] px-4 py-3 text-[15px]",
                 )}
               >
+                {pill(l.id, "nav-pill-mobile", "rounded-[10px]")}
                 {l.label}
               </a>
             ))}
