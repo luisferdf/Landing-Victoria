@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:#fff;font-family:'Poppins',system-ui,-apple-system,sans-serif;color:#333;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#333;text-decoration:none}
+a:hover{color:#000}
+input,textarea,button,select{font-family:inherit}
+input::placeholder,textarea::placeholder{color:#b5b5b5}
+@keyframes ld{from{width:0}to{width:100%}}
+@keyframes blink{50%{opacity:0}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes dot{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-5px);opacity:1}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+
+<header style="position:fixed;top:16px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:1160px;z-index:50">
+  <nav style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 12px 10px 24px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border:1px solid #e5e5e5;border-radius:999px;box-shadow:0 6px 24px rgba(0,0,0,.06)">
+    <a href="Portfolio%20Wireframe.dc.html#inicio" style="font-weight:800;font-size:18px;letter-spacing:-0.02em;color:#333">PORTFOLIO.</a>
+    <div style="display:{{ navLinksDisplay }};gap:4px;align-items:center">
+      <sc-for list="{{ links }}" as="l" hint-placeholder-count="5">
+        <a href="{{ l.href }}" style="padding:8px 14px;border-radius:999px;font-size:14px;font-weight:{{ l.weight }};color:{{ l.color }};background:{{ l.bg }};transition:color .2s, background .2s">{{ l.label }}</a>
+      </sc-for>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button title="Tema" style="width:40px;height:40px;border-radius:50%;border:1px solid #e5e5e5;background:#f0f0f0;cursor:pointer;font-size:9px;color:#9a9a9a;letter-spacing:.05em" style-active="transform:scale(.94)">ICONO</button>
+      <button onClick="{{ toggleMenu }}" aria-label="Menú" style="display:{{ burgerDisplay }};width:40px;height:40px;border-radius:50%;border:1px solid #e5e5e5;background:#fff;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:4px" style-active="transform:scale(.94)">
+        <span style="width:16px;height:2px;background:#333;border-radius:2px"></span>
+        <span style="width:16px;height:2px;background:#333;border-radius:2px"></span>
+        <span style="width:16px;height:2px;background:#333;border-radius:2px"></span>
+      </button>
+    </div>
+  </nav>
+  <sc-if value="{{ menuVisible }}" hint-placeholder-val="{{ false }}">
+    <div style="margin-top:8px;background:#fff;border:1px solid #e5e5e5;border-radius:16px;box-shadow:0 12px 32px rgba(0,0,0,.08);padding:8px;display:flex;flex-direction:column">
+      <sc-for list="{{ links }}" as="l" hint-placeholder-count="5">
+        <a href="{{ l.href }}" style="padding:12px 16px;border-radius:10px;font-size:15px;font-weight:{{ l.weight }};color:{{ l.color }};background:{{ l.bg }}">{{ l.label }}</a>
+      </sc-for>
+    </div>
+  </sc-if>
+</header>
+
+<sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}"><main data-screen-label="Todos los proyectos">
+<section style="padding:120px 24px 32px"><div style="max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:28px">
+<sc-if value="{{ showTags }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;white-space:nowrap;color:#9a9a9a;border:1px dashed #d4d4d4;border-radius:6px;padding:3px 8px">&lt;ProjectsPage /&gt;</span><span style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:#b0b0b0">whileInView: blur 8px→0, opacity 0→1, y 30→0 · staggerChildren 0.08</span></div></sc-if>
+<a href="Portfolio%20Wireframe.dc.html#inicio" style="font-size:14px;color:#9a9a9a;align-self:flex-start" style-hover="color:#333">← Volver al inicio</a>
+<div data-stagger="" style="display:flex;flex-direction:column;gap:14px">
+<div data-reveal="" style="font-size:12px;letter-spacing:.25em;color:#9a9a9a;font-weight:600">PORTAFOLIO</div>
+<h1 data-reveal="" style="margin:0;font-size:clamp(44px,7vw,80px);line-height:1.02;font-weight:800;letter-spacing:-0.03em;color:#333">Todos los Proyectos</h1>
+<div data-reveal="" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px"><div style="height:10px;border-radius:6px;background:#e5e5e5;width:min(480px,100%)"></div><span style="padding:6px 14px;border-radius:999px;border:1px solid #e5e5e5;font-size:13px;color:#333;font-weight:500;white-space:nowrap;flex:none">{{ countLabel }}</span></div>
+</div></div></section>
+<div style="padding:0 24px"><div style="max-width:1200px;margin:0 auto 10px"><sc-if value="{{ showTags }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;white-space:nowrap;color:#9a9a9a;border:1px dashed #d4d4d4;border-radius:6px;padding:3px 8px">&lt;ProjectFilters /&gt;</span><span style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:#b0b0b0">position: sticky · chip activo: motion.span con layoutId: chip · vista: AnimatePresence mode: wait (fade + y)</span></div></sc-if></div></div>
+<div style="position:sticky;top:90px;z-index:40;padding:0 24px">
+<div style="max-width:1200px;margin:0 auto;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border:1px solid #e5e5e5;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.05);padding:14px;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+<label style="flex:1 1 260px;min-width:0;display:flex;align-items:center;gap:10px;padding:0 14px;border:1px solid #e5e5e5;border-radius:12px;background:#fff"><span style="width:14px;height:14px;flex:none;border-radius:50%;border:2px solid #b5b5b5"></span><input value="{{ q }}" onChange="{{ onQ }}" placeholder="Buscar proyecto o tecnología..." style="flex:1;min-width:0;border:none;outline:none;padding:11px 0;font-size:14px;color:#333;background:transparent"></label>
+<select value="{{ tech }}" onChange="{{ onTech }}" aria-label="Tecnología" style="padding:11px 14px;border:1px solid #e5e5e5;border-radius:12px;font-size:14px;color:#333;background:#fff;outline:none;cursor:pointer;min-width:0;flex:0 1 210px"><option value="">Todas las tecnologías</option><option value="Tecnología A">Tecnología A</option><option value="Tecnología B">Tecnología B</option><option value="Tecnología C">Tecnología C</option><option value="Tecnología D">Tecnología D</option><option value="Tecnología E">Tecnología E</option><option value="Tecnología F">Tecnología F</option><option value="Tecnología G">Tecnología G</option><option value="Tecnología H">Tecnología H</option></select>
+<select value="{{ sort }}" onChange="{{ onSort }}" aria-label="Orden" style="padding:11px 14px;border:1px solid #e5e5e5;border-radius:12px;font-size:14px;color:#333;background:#fff;outline:none;cursor:pointer;min-width:0;flex:0 1 190px"><option value="recientes">Más recientes</option><option value="antiguos">Más antiguos</option><option value="destacados">Destacados primero</option><option value="az">A–Z</option></select>
+<div style="display:inline-flex;padding:4px;border:1px solid #e5e5e5;border-radius:12px;background:#fafafa;gap:4px"><button onClick="{{ setGrid }}" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:9px;border:none;background:{{ setGridBg }};box-shadow:{{ setGridSh }};color:{{ setGridColor }};font-size:13px;cursor:pointer;white-space:nowrap"><span style="display:grid;grid-template-columns:repeat(2,5px);gap:2px"><span style="width:5px;height:5px;border-radius:1px;background:currentColor"></span><span style="width:5px;height:5px;border-radius:1px;background:currentColor"></span><span style="width:5px;height:5px;border-radius:1px;background:currentColor"></span><span style="width:5px;height:5px;border-radius:1px;background:currentColor"></span></span>Cuadrícula</button><button onClick="{{ setList }}" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:9px;border:none;background:{{ setListBg }};box-shadow:{{ setListSh }};color:{{ setListColor }};font-size:13px;cursor:pointer;white-space:nowrap"><span style="display:flex;flex-direction:column;gap:2px"><span style="width:12px;height:2px;border-radius:1px;background:currentColor"></span><span style="width:12px;height:2px;border-radius:1px;background:currentColor"></span><span style="width:12px;height:2px;border-radius:1px;background:currentColor"></span></span>Lista</button></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px">
+<div ref="{{ chipsRef }}" style="position:relative;display:flex;flex-wrap:wrap;gap:8px">
+<span ref="{{ indRef }}" style="position:absolute;top:0;left:0;width:0;height:0;border-radius:999px;background:#333;pointer-events:none"></span>
+<sc-for list="{{ chips }}" as="c" hint-placeholder-count="6"><button data-on="{{ c.on }}" onClick="{{ c.select }}" style="position:relative;padding:7px 16px;border-radius:999px;border:1px solid {{ c.border }};background:transparent;color:{{ c.color }};font-size:13px;font-weight:500;cursor:pointer;transition:color .25s, border-color .25s" style-active="transform:scale(.96)">{{ c.label }}</button></sc-for>
+</div>
+<sc-if value="{{ filtersActive }}" hint-placeholder-val="{{ false }}"><a href="#" onClick="{{ clearFilters }}" style="margin-left:auto;font-size:13px;color:#333;text-decoration:underline;text-underline-offset:3px">Limpiar filtros</a></sc-if>
+</div></div></div>
+<sc-if value="{{ showFeatured }}" hint-placeholder-val="{{ true }}"><section style="padding:40px 24px 0"><div style="max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:16px">
+<sc-if value="{{ showTags }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;white-space:nowrap;color:#9a9a9a;border:1px dashed #d4d4d4;border-radius:6px;padding:3px 8px">&lt;FeaturedProjects /&gt;</span><span style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:#b0b0b0">whileInView + stagger 0.1s · whileHover: y -6 · imagen scale 1.06</span></div></sc-if>
+<div data-stagger="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));gap:28px">
+<sc-for list="{{ featured }}" as="f" hint-placeholder-count="2"><div data-reveal="" style="min-width:0"><article data-hg="" style="height:100%;display:flex;flex-wrap:wrap;background:#fff;border:1px solid #e5e5e5;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.03);transition:transform .3s ease, box-shadow .3s ease" style-hover="transform:translateY(-6px);box-shadow:0 20px 44px rgba(0,0,0,.10)">
+<a href="{{ f.href }}" style="position:relative;display:block;flex:1 1 240px;min-height:100%;aspect-ratio:16/10;overflow:hidden;border-right:1px solid #e5e5e5"><div data-hfx="scale(1.06)" style="width:100%;height:100%;transition:transform .5s ease;background:linear-gradient(to top right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),linear-gradient(to bottom right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),#f0f0f0;display:flex;align-items:center;justify-content:center"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#9a9a9a;background:#fff;padding:2px 8px;border-radius:4px">Captura</span></div><span style="position:absolute;top:14px;left:14px;padding:5px 12px;border-radius:999px;background:#333;color:#fff;font-size:10px;font-weight:700;letter-spacing:.18em">DESTACADO</span></a>
+<div style="flex:1 1 240px;min-width:0;padding:24px;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-0.03em;color:#e5e5e5">{{ f.num }}</span><span style="display:flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;border:1px solid #e5e5e5;background:#fff;font-size:11px;color:#333;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:{{ f.dot }}"></span>{{ f.status }}</span></div>
+<h3 style="margin:0 0 4px;font-size:22px;font-weight:700;color:#333">{{ f.title }}</h3>
+<div style="height:9px;border-radius:6px;background:#e5e5e5;width:100%"></div><div style="height:9px;border-radius:6px;background:#e5e5e5;width:88%"></div><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ f.tags3 }}" as="t" hint-placeholder-count="3"><span style="padding:4px 10px;border-radius:999px;border:1px solid #e5e5e5;background:#f0f0f0;font-size:12px;color:#9a9a9a;white-space:nowrap">{{ t.t }}</span></sc-for><sc-if value="{{ f.hasMore }}" hint-placeholder-val="{{ false }}"><span style="padding:4px 10px;border-radius:999px;border:1px solid #d4d4d4;background:#fff;font-size:12px;font-weight:600;color:#333">{{ f.more }}</span></sc-if></div>
+<div style="margin-top:auto;padding-top:14px;display:flex;flex-wrap:wrap;align-items:center;gap:14px"><a href="{{ f.href }}" style="flex:1;text-align:center;padding:12px;border-radius:12px;border:1px solid #333;background:#fff;color:#333;font-weight:600;font-size:12px;letter-spacing:.15em;cursor:pointer;transition:transform .15s" style-active="transform:scale(.97)">VER DETALLES</a><a href="https://ejemplo.com" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:6px;font-size:13px;color:#9a9a9a;white-space:nowrap" style-hover="color:#333"><span style="width:22px;height:22px;border-radius:6px;border:1px solid #e5e5e5;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#333">↗</span>ejemplo.com</a></div>
+</div></article></div></sc-for>
+</div></div></section></sc-if>
+<section style="padding:40px 24px 80px"><div style="max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:16px">
+<sc-if value="{{ showTags }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;white-space:nowrap;color:#9a9a9a;border:1px dashed #d4d4d4;border-radius:6px;padding:3px 8px">&lt;ProjectGrid /&gt;</span><span style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:#b0b0b0">&lt;motion.div layout&gt; + AnimatePresence (exit: opacity 0, scale 0.95) · whileHover: y -6</span></div></sc-if>
+<div ref="{{ wrapRef }}">
+<sc-if value="{{ isGrid }}" hint-placeholder-val="{{ true }}"><div data-stagger="" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:28px"><sc-for list="{{ shown }}" as="p" hint-placeholder-count="6"><div data-reveal="" data-pk="{{ p.slug }}" style="min-width:0">
+<article data-hg="" style="height:100%;display:flex;flex-direction:column;background:#fff;border:1px solid #e5e5e5;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.03);transition:transform .3s ease, box-shadow .3s ease" style-hover="transform:translateY(-6px);box-shadow:0 20px 44px rgba(0,0,0,.10)">
+<a href="{{ p.href }}" style="display:block;aspect-ratio:16/10;overflow:hidden;border-bottom:1px solid #e5e5e5"><div data-hfx="scale(1.06)" style="width:100%;height:100%;transition:transform .5s ease;background:linear-gradient(to top right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),linear-gradient(to bottom right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),#f0f0f0;display:flex;align-items:center;justify-content:center"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#9a9a9a;background:#fff;padding:2px 8px;border-radius:4px">Captura</span></div></a>
+<div style="padding:24px;display:flex;flex-direction:column;gap:10px;flex:1">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-0.03em;color:#e5e5e5">{{ p.num }}</span><div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;color:#9a9a9a">{{ p.year }}</span><span style="display:flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;border:1px solid #e5e5e5;background:#fff;font-size:11px;color:#333;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:{{ p.dot }}"></span>{{ p.status }}</span></div></div>
+<h3 style="margin:0 0 4px;font-size:20px;font-weight:700;color:#333">{{ p.title }}</h3>
+<div style="height:9px;border-radius:6px;background:#e5e5e5;width:{{ p.w1 }}"></div><div style="height:9px;border-radius:6px;background:#e5e5e5;width:{{ p.w2 }}"></div><div style="height:9px;border-radius:6px;background:#e5e5e5;width:{{ p.w3 }}"></div>
+<div style="margin-top:6px"><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ p.tags3 }}" as="t" hint-placeholder-count="3"><span style="padding:4px 10px;border-radius:999px;border:1px solid #e5e5e5;background:#f0f0f0;font-size:12px;color:#9a9a9a;white-space:nowrap">{{ t.t }}</span></sc-for><sc-if value="{{ p.hasMore }}" hint-placeholder-val="{{ false }}"><span style="padding:4px 10px;border-radius:999px;border:1px solid #d4d4d4;background:#fff;font-size:12px;font-weight:600;color:#333">{{ p.more }}</span></sc-if></div></div>
+<div style="margin-top:auto;padding-top:14px;display:flex;align-items:center;gap:14px"><a href="{{ p.href }}" style="flex:1;text-align:center;padding:12px;border-radius:12px;border:1px solid #333;background:#fff;color:#333;font-weight:600;font-size:12px;letter-spacing:.15em;cursor:pointer;transition:transform .15s" style-active="transform:scale(.97)">VER DETALLES</a><a href="https://ejemplo.com" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:6px;font-size:13px;color:#9a9a9a;white-space:nowrap" style-hover="color:#333"><span style="width:22px;height:22px;border-radius:6px;border:1px solid #e5e5e5;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#333">↗</span>ejemplo.com</a></div>
+</div></article></div></sc-for></div></sc-if>
+<sc-if value="{{ isListView }}" hint-placeholder-val="{{ false }}"><div data-stagger="" style="display:flex;flex-direction:column;gap:12px"><sc-for list="{{ shown }}" as="p" hint-placeholder-count="6"><div data-reveal="" data-pk="{{ p.slug }}" style="min-width:0">
+<article data-hg="" style="display:flex;flex-wrap:wrap;align-items:center;gap:16px 20px;padding:14px;background:#fff;border:1px solid #e5e5e5;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.03);transition:transform .3s ease, box-shadow .3s ease" style-hover="transform:translateY(-3px);box-shadow:0 14px 32px rgba(0,0,0,.08)">
+<a href="{{ p.href }}" style="display:block;width:132px;flex:none;aspect-ratio:16/10;border-radius:10px;overflow:hidden;border:1px solid #e5e5e5"><div data-hfx="scale(1.08)" style="width:100%;height:100%;transition:transform .5s ease;background:linear-gradient(to top right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),linear-gradient(to bottom right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),#f0f0f0;display:flex;align-items:center;justify-content:center"><span style="font-family:ui-monospace,Menlo,monospace;font-size:9px;color:#9a9a9a;background:#fff;padding:1px 6px;border-radius:4px">Captura</span></div></a>
+<span style="font-size:28px;font-weight:800;letter-spacing:-0.03em;color:#e5e5e5;flex:none">{{ p.num }}</span>
+<div style="flex:1 1 260px;min-width:0;display:flex;flex-direction:column;gap:8px"><h3 style="margin:0;font-size:17px;font-weight:700;color:#333">{{ p.title }}</h3><div style="height:9px;border-radius:6px;background:#e5e5e5;width:{{ p.w2 }};max-width:420px"></div><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ p.tags3 }}" as="t" hint-placeholder-count="3"><span style="padding:4px 10px;border-radius:999px;border:1px solid #e5e5e5;background:#f0f0f0;font-size:12px;color:#9a9a9a;white-space:nowrap">{{ t.t }}</span></sc-for><sc-if value="{{ p.hasMore }}" hint-placeholder-val="{{ false }}"><span style="padding:4px 10px;border-radius:999px;border:1px solid #d4d4d4;background:#fff;font-size:12px;font-weight:600;color:#333">{{ p.more }}</span></sc-if></div></div>
+<div style="display:flex;align-items:center;gap:10px;flex:none"><span style="font-size:12px;color:#9a9a9a">{{ p.year }}</span><span style="display:flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;border:1px solid #e5e5e5;background:#fff;font-size:11px;color:#333;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:{{ p.dot }}"></span>{{ p.status }}</span></div>
+<div style="display:flex;align-items:center;gap:10px;flex:none;margin-left:auto"><a href="{{ p.href }}" style="padding:12px;border-radius:12px;border:1px solid #333;background:#fff;color:#333;font-weight:600;font-size:12px;letter-spacing:.15em;cursor:pointer;transition:transform .15s;padding:10px 16px;font-size:11px" style-active="transform:scale(.97)">VER DETALLES</a><a href="https://ejemplo.com" target="_blank" rel="noopener" aria-label="Enlace externo" style="width:40px;height:40px;border-radius:12px;border:1px solid #e5e5e5;display:flex;align-items:center;justify-content:center;color:#333;font-size:14px" style-hover="border-color:#333">↗</a></div>
+</article></div></sc-for></div></sc-if>
+<sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;align-items:center;gap:14px;padding:72px 16px;border:1px dashed #d4d4d4;border-radius:16px;text-align:center;background:#fff"><span style="width:56px;height:56px;border-radius:16px;border:1px solid #e5e5e5;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:8px;color:#9a9a9a;letter-spacing:.05em">ICONO</span><span style="font-size:20px;font-weight:700;color:#333">No se encontraron proyectos</span><div style="height:9px;border-radius:6px;background:#e5e5e5;width:min(280px,80%)"></div><button onClick="{{ clearFilters }}" style="padding:12px;border-radius:12px;border:1px solid #333;background:#fff;color:#333;font-weight:600;font-size:12px;letter-spacing:.15em;cursor:pointer;transition:transform .15s;padding:12px 24px;margin-top:6px" style-active="transform:scale(.97)">LIMPIAR FILTROS</button></div></sc-if>
+</div>
+<sc-if value="{{ hasResults }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:32px">
+<sc-if value="{{ hasMore }}" hint-placeholder-val="{{ true }}"><button onClick="{{ loadMore }}" style="padding:12px;border-radius:12px;border:1px solid #333;background:#fff;color:#333;font-weight:600;font-size:12px;letter-spacing:.15em;cursor:pointer;transition:transform .15s;padding:14px 32px" style-active="transform:scale(.97)">CARGAR MÁS</button></sc-if>
+<span style="font-size:13px;color:#9a9a9a">{{ shownLabel }}</span></div></sc-if>
+</div></section>
+<section style="padding:0 24px 120px"><div style="max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:16px">
+<sc-if value="{{ showTags }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;white-space:nowrap;color:#9a9a9a;border:1px dashed #d4d4d4;border-radius:6px;padding:3px 8px">&lt;ProjectsCTA /&gt;</span><span style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:#b0b0b0">whileInView: blur 8px→0, opacity 0→1, y 30→0</span></div></sc-if>
+<div data-reveal="" style="border:1px solid #e5e5e5;border-radius:16px;padding:56px clamp(24px,5vw,56px);text-align:center;background:#fff;box-shadow:0 10px 40px rgba(0,0,0,.05);display:flex;flex-direction:column;align-items:center;gap:18px">
+<h2 style="margin:0;font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-0.03em;color:#333">¿Tienes un proyecto en mente?</h2><div style="height:9px;border-radius:6px;background:#e5e5e5;width:min(420px,80%)"></div>
+<a href="Portfolio%20Wireframe.dc.html#contacto" style="padding:14px 28px;border-radius:12px;border:1px solid #333;background:#333;color:#fff;font-weight:600;font-size:12px;letter-spacing:.15em;cursor:pointer;transition:transform .15s;text-align:center;margin-top:8px" style-active="transform:scale(.97)">CONTÁCTAME</a></div>
+</div></section>
+</main></sc-if>
+
+<sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}"><main data-screen-label="Detalle del proyecto">
+<section style="padding:120px 24px 120px"><div style="max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:40px">
+<sc-if value="{{ showTags }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;white-space:nowrap;color:#9a9a9a;border:1px dashed #d4d4d4;border-radius:6px;padding:3px 8px">&lt;ProjectDetail /&gt;</span><span style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:#b0b0b0">imagen: initial scale 1.05 → animate 1 · galería: AnimatePresence fade + scale 0.94→1 · ficha: position sticky</span></div></sc-if>
+<a href="#" style="font-size:14px;color:#9a9a9a;align-self:flex-start" style-hover="color:#333">← Todos los proyectos</a>
+<div data-stagger="" style="display:flex;flex-direction:column;gap:16px;max-width:820px">
+<div data-reveal="" style="display:flex;flex-wrap:wrap;align-items:center;gap:14px"><span style="font-size:56px;font-weight:800;line-height:1;letter-spacing:-0.03em;color:#e5e5e5">{{ d.num }}</span><span style="display:flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;border:1px solid #e5e5e5;background:#fff;font-size:11px;color:#333;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:{{ d.dot }}"></span>{{ d.status }}</span><span style="font-size:13px;color:#9a9a9a">{{ d.year }}</span></div>
+<h1 data-reveal="" style="margin:0;font-size:clamp(40px,6vw,72px);line-height:1.02;font-weight:800;letter-spacing:-0.03em;color:#333">{{ d.title }}</h1>
+<div data-reveal="" style="display:flex;flex-direction:column;gap:10px"><div style="height:10px;border-radius:6px;background:#e5e5e5;width:100%"></div><div style="height:10px;border-radius:6px;background:#e5e5e5;width:72%"></div></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div data-reveal=""><button data-i="0" onClick="{{ openImg }}" aria-label="Ampliar imagen" style="display:block;width:100%;padding:0;border:1px solid #e5e5e5;border-radius:16px;overflow:hidden;cursor:zoom-in;background:none;aspect-ratio:16/9"><div ref="{{ heroImgRef }}" style="width:100%;height:100%;background:linear-gradient(to top right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),linear-gradient(to bottom right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),#f0f0f0;display:flex;align-items:center;justify-content:center"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#9a9a9a;background:#fff;padding:2px 8px;border-radius:4px">Imagen principal</span></div></button></div>
+<div data-stagger="" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px"><sc-for list="{{ thumbs }}" as="g" hint-placeholder-count="4"><div data-reveal=""><button data-i="{{ g.i }}" onClick="{{ openImg }}" style="display:block;width:100%;padding:0;aspect-ratio:16/10;border:1px solid #e5e5e5;border-radius:12px;overflow:hidden;cursor:zoom-in;background:none;transition:transform .2s ease" style-hover="transform:translateY(-3px)"><div style="width:100%;height:100%;background:linear-gradient(to top right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),linear-gradient(to bottom right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),#f0f0f0;display:flex;align-items:center;justify-content:center"><span style="font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#9a9a9a;background:#fff;padding:1px 6px;border-radius:4px">{{ g.label }}</span></div></button></div></sc-for></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+<div style="flex:1.6 1 460px;min-width:0;display:flex;flex-direction:column;gap:48px">
+<sc-for list="{{ sections }}" as="s" hint-placeholder-count="4"><div data-reveal="" style="display:flex;flex-direction:column;gap:12px"><span style="font-size:12px;letter-spacing:.25em;color:#9a9a9a;font-weight:600">{{ s.n }}</span><h2 style="margin:0 0 6px;font-size:28px;font-weight:800;letter-spacing:-0.02em;color:#333">{{ s.title }}</h2><div style="height:9px;border-radius:6px;background:#e5e5e5;width:100%"></div><div style="height:9px;border-radius:6px;background:#e5e5e5;width:96%"></div><div style="height:9px;border-radius:6px;background:#e5e5e5;width:92%"></div><div style="height:9px;border-radius:6px;background:#e5e5e5;width:64%"></div></div></sc-for>
+</div>
+<aside style="flex:1 1 300px;min-width:0;position:sticky;top:100px">
+<div data-reveal="" style="border:1px solid #e5e5e5;border-radius:16px;padding:28px;background:#fff;box-shadow:0 10px 40px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:16px">
+<span style="font-size:12px;letter-spacing:.25em;color:#9a9a9a;font-weight:600">FICHA DEL PROYECTO</span>
+<sc-for list="{{ facts }}" as="x" hint-placeholder-count="4"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding-bottom:14px;border-bottom:1px solid #f0f0f0"><span style="font-size:11px;letter-spacing:.18em;color:#9a9a9a;font-weight:600">{{ x.k }}</span><span style="font-size:14px;color:#333;text-align:right">{{ x.v }}</span></div></sc-for>
+<div style="display:flex;flex-direction:column;gap:10px"><span style="font-size:11px;letter-spacing:.18em;color:#9a9a9a;font-weight:600">TECNOLOGÍAS</span><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ d.allTags }}" as="t" hint-placeholder-count="5"><span style="padding:4px 10px;border-radius:999px;border:1px solid #e5e5e5;background:#f0f0f0;font-size:12px;color:#9a9a9a">{{ t.t }}</span></sc-for></div></div>
+<div style="display:flex;flex-direction:column;gap:8px;margin-top:6px"><a href="https://ejemplo.com" target="_blank" rel="noopener" style="padding:14px 28px;border-radius:12px;border:1px solid #333;background:#333;color:#fff;font-weight:600;font-size:12px;letter-spacing:.15em;cursor:pointer;transition:transform .15s;text-align:center" style-active="transform:scale(.97)">VER PROYECTO ↗</a><a href="https://ejemplo.com" target="_blank" rel="noopener" style="padding:12px;border-radius:12px;border:1px solid #333;background:#fff;color:#333;font-weight:600;font-size:12px;letter-spacing:.15em;cursor:pointer;transition:transform .15s;padding:14px;text-align:center" style-active="transform:scale(.97)">VER CÓDIGO ↗</a></div>
+</div></aside>
+</div>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;border-top:1px solid #e5e5e5;padding-top:40px">
+<a href="{{ prev.href }}" style="display:flex;flex-direction:column;gap:6px;padding:20px;border:1px solid #e5e5e5;border-radius:16px;background:#fff;min-width:0;transition:border-color .2s" style-hover="border-color:#333"><span style="font-size:12px;color:#9a9a9a">← Proyecto anterior</span><span style="font-size:18px;font-weight:700;color:#333">{{ prev.title }}</span></a>
+<a href="{{ next.href }}" style="display:flex;flex-direction:column;align-items:flex-end;text-align:right;gap:6px;padding:20px;border:1px solid #e5e5e5;border-radius:16px;background:#fff;min-width:0;transition:border-color .2s" style-hover="border-color:#333"><span style="font-size:12px;color:#9a9a9a">Proyecto siguiente →</span><span style="font-size:18px;font-weight:700;color:#333">{{ next.title }}</span></a>
+</div>
+<div style="display:flex;flex-direction:column;gap:32px">
+<div style="text-align:center"><div data-reveal="" style="font-size:12px;letter-spacing:.25em;color:#9a9a9a;font-weight:600;margin-bottom:12px">MÁS TRABAJO</div><h2 data-reveal="" style="margin:0;font-size:clamp(32px,4.5vw,48px);font-weight:800;letter-spacing:-0.03em;color:#333">Otros proyectos</h2></div>
+<div data-stagger="" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:28px"><sc-for list="{{ others }}" as="o" hint-placeholder-count="3"><div data-reveal="" style="min-width:0">
+<article data-hg="" style="height:100%;display:flex;flex-direction:column;background:#fff;border:1px solid #e5e5e5;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.03);transition:transform .3s ease, box-shadow .3s ease" style-hover="transform:translateY(-6px);box-shadow:0 20px 44px rgba(0,0,0,.10)">
+<a href="{{ o.href }}" style="display:block;aspect-ratio:16/10;overflow:hidden;border-bottom:1px solid #e5e5e5"><div data-hfx="scale(1.06)" style="width:100%;height:100%;transition:transform .5s ease;background:linear-gradient(to top right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),linear-gradient(to bottom right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),#f0f0f0;display:flex;align-items:center;justify-content:center"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#9a9a9a;background:#fff;padding:2px 8px;border-radius:4px">Captura</span></div></a>
+<div style="padding:24px;display:flex;flex-direction:column;gap:10px;flex:1">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-0.03em;color:#e5e5e5">{{ o.num }}</span><div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;color:#9a9a9a">{{ o.year }}</span><span style="display:flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;border:1px solid #e5e5e5;background:#fff;font-size:11px;color:#333;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:{{ o.dot }}"></span>{{ o.status }}</span></div></div>
+<h3 style="margin:0 0 4px;font-size:20px;font-weight:700;color:#333">{{ o.title }}</h3>
+<div style="height:9px;border-radius:6px;background:#e5e5e5;width:{{ o.w1 }}"></div><div style="height:9px;border-radius:6px;background:#e5e5e5;width:{{ o.w2 }}"></div><div style="height:9px;border-radius:6px;background:#e5e5e5;width:{{ o.w3 }}"></div>
+<div style="margin-top:6px"><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ o.tags3 }}" as="t" hint-placeholder-count="3"><span style="padding:4px 10px;border-radius:999px;border:1px solid #e5e5e5;background:#f0f0f0;font-size:12px;color:#9a9a9a;white-space:nowrap">{{ t.t }}</span></sc-for><sc-if value="{{ o.hasMore }}" hint-placeholder-val="{{ false }}"><span style="padding:4px 10px;border-radius:999px;border:1px solid #d4d4d4;background:#fff;font-size:12px;font-weight:600;color:#333">{{ o.more }}</span></sc-if></div></div>
+<div style="margin-top:auto;padding-top:14px;display:flex;align-items:center;gap:14px"><a href="{{ o.href }}" style="flex:1;text-align:center;padding:12px;border-radius:12px;border:1px solid #333;background:#fff;color:#333;font-weight:600;font-size:12px;letter-spacing:.15em;cursor:pointer;transition:transform .15s" style-active="transform:scale(.97)">VER DETALLES</a><a href="https://ejemplo.com" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:6px;font-size:13px;color:#9a9a9a;white-space:nowrap" style-hover="color:#333"><span style="width:22px;height:22px;border-radius:6px;border:1px solid #e5e5e5;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#333">↗</span>ejemplo.com</a></div>
+</div></article></div></sc-for></div>
+</div>
+</div></section>
+<sc-if value="{{ lbOpen }}" hint-placeholder-val="{{ false }}"><div ref="{{ lbRef }}" onClick="{{ lbClose }}" style="position:fixed;inset:0;z-index:90;background:rgba(20,20,20,.72);display:flex;align-items:center;justify-content:center;padding:24px">
+<div ref="{{ lbPanelRef }}" onClick="{{ stop }}" style="position:relative;width:min(1100px,100%);display:flex;flex-direction:column;gap:14px">
+<div style="aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#fff;border:1px solid #e5e5e5"><div style="width:100%;height:100%;background:linear-gradient(to top right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),linear-gradient(to bottom right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),#f0f0f0;display:flex;align-items:center;justify-content:center"><span style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#9a9a9a;background:#fff;padding:3px 10px;border-radius:4px">{{ lbLabel }}</span></div></div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><button onClick="{{ lbPrev }}" aria-label="Anterior" style="width:44px;height:44px;border-radius:50%;border:1px solid #fff;background:transparent;color:#fff;cursor:pointer;font-size:16px" style-active="transform:scale(.92)">←</button><span style="font-size:13px;color:#fff">{{ lbCount }}</span><button onClick="{{ lbNext }}" aria-label="Siguiente" style="width:44px;height:44px;border-radius:50%;border:1px solid #fff;background:transparent;color:#fff;cursor:pointer;font-size:16px" style-active="transform:scale(.92)">→</button></div>
+<button onClick="{{ lbClose }}" aria-label="Cerrar" style="position:absolute;top:-16px;right:-16px;width:40px;height:40px;border-radius:50%;border:1px solid #e5e5e5;background:#fff;color:#333;cursor:pointer;font-size:20px;line-height:1;box-shadow:0 6px 20px rgba(0,0,0,.2)">×</button>
+</div></div></sc-if>
+</main></sc-if>
+
+<!-- FOOTER -->
+<footer data-screen-label="Footer" style="position:relative;padding:48px 24px;border-top:1px solid #e5e5e5;display:flex;flex-direction:column;align-items:center;gap:16px">
+  <sc-if value="{{ showTags }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;top:16px;left:16px;right:16px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;pointer-events:none"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;white-space:nowrap;color:#9a9a9a;border:1px dashed #d4d4d4;border-radius:6px;padding:3px 8px">&lt;Footer /&gt;</span><span style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:#b0b0b0">whileInView: opacity 0→1</span></div></sc-if>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center">
+    <p style="margin:0;font-size:14px;color:#333;font-weight:500">© 2026 TuMarca. Todos los derechos reservados.</p>
+    <p style="margin:0;font-size:12px;color:#9a9a9a">Hecho con Next.js y Tailwind CSS</p>
+  </div>
+  <div style="display:flex;gap:10px">
+    <span style="width:32px;height:32px;border-radius:8px;border:1px solid #e5e5e5;background:#f0f0f0"></span>
+    <span style="width:32px;height:32px;border-radius:8px;border:1px solid #e5e5e5;background:#f0f0f0"></span>
+    <span style="width:32px;height:32px;border-radius:8px;border:1px solid #e5e5e5;background:#f0f0f0"></span>
+  </div>
+</footer>
+
+<!-- CHAT -->
+<div data-screen-label="Chat" style="position:fixed;right:24px;bottom:96px;z-index:60;width:min(360px,calc(100vw - 48px));height:min(520px,calc(100vh - 140px));background:#fff;border:1px solid #e5e5e5;border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.14);display:flex;flex-direction:column;overflow:hidden;transform-origin:bottom right;transition:opacity .25s ease, transform .3s cubic-bezier(.2,.8,.2,1);opacity:{{ chatOpacity }};transform:{{ chatTransform }};pointer-events:{{ chatPointer }}">
+  <div style="display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid #e5e5e5">
+    <span style="width:40px;height:40px;border-radius:50%;background:#e5e5e5;flex:none"></span>
+    <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+      <span style="height:10px;width:110px;border-radius:6px;background:#d4d4d4"></span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:#9a9a9a"><span style="width:8px;height:8px;border-radius:50%;background:#3fb950"></span>En línea</span>
+    </div>
+    <button onClick="{{ toggleChat }}" aria-label="Cerrar" style="width:32px;height:32px;border-radius:50%;border:1px solid #e5e5e5;background:#fff;cursor:pointer;font-size:18px;line-height:1;color:#333" style-active="transform:scale(.92)">×</button>
+  </div>
+  <div ref="{{ msgsRef }}" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:#fafafa"><sc-if value="{{ showTags }}" hint-placeholder-val="{{ true }}"><span style="align-self:center;text-align:center;font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#b0b0b0">&lt;ChatWidget /&gt; · AnimatePresence: scale 0.85→1, opacity 0→1 · puntos: animate y, repeat: Infinity</span></sc-if>
+    <sc-for list="{{ msgs }}" as="m" hint-placeholder-count="2">
+      <div style="align-self:{{ m.align }};max-width:78%;padding:10px 14px;border-radius:{{ m.radius }};background:{{ m.bg }};color:{{ m.color }};font-size:14px;line-height:1.45;border:1px solid {{ m.border }}">{{ m.text }}</div>
+    </sc-for>
+    <sc-if value="{{ typing }}" hint-placeholder-val="{{ false }}">
+      <div style="align-self:flex-start;display:flex;gap:5px;padding:14px 16px;border-radius:14px 14px 14px 4px;background:#fff;border:1px solid #e5e5e5">
+        <span style="width:7px;height:7px;border-radius:50%;background:#9a9a9a;animation:dot 1.1s ease-in-out infinite"></span>
+        <span style="width:7px;height:7px;border-radius:50%;background:#9a9a9a;animation:dot 1.1s ease-in-out .15s infinite"></span>
+        <span style="width:7px;height:7px;border-radius:50%;background:#9a9a9a;animation:dot 1.1s ease-in-out .3s infinite"></span>
+      </div>
+    </sc-if>
+  </div>
+  <div style="display:flex;gap:8px;padding:12px;border-top:1px solid #e5e5e5">
+    <input value="{{ chatInput }}" onChange="{{ onChatInput }}" onKeyDown="{{ onChatKey }}" placeholder="Escribe un mensaje…" style="flex:1;min-width:0;padding:12px 14px;border-radius:12px;border:1px solid #e5e5e5;font-size:14px;outline:none;color:#333" style-focus="border-color:#333">
+    <button onClick="{{ send }}" aria-label="Enviar" style="width:44px;height:44px;flex:none;border-radius:12px;border:none;background:#333;color:#fff;cursor:pointer;font-size:16px" style-active="transform:scale(.94)">→</button>
+  </div>
+</div>
+<button onClick="{{ toggleChat }}" aria-label="Chat" style="position:fixed;right:24px;bottom:24px;z-index:61;width:56px;height:56px;border-radius:50%;border:none;background:#333;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;transition:transform .15s" style-active="transform:scale(.92)">
+  <span style="width:22px;height:18px;border-radius:6px;border:2px solid #fff"></span>
+  <span style="position:absolute;top:-2px;right:-2px;padding:2px 6px;border-radius:999px;background:#fff;border:1px solid #333;color:#333;font-size:9px;font-weight:700;letter-spacing:.05em">AI</span>
+</button>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showTags&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Wireframe&quot;}}">
+const LANDING = 'Portfolio%20Wireframe.dc.html';
+const NAV = [['inicio', 'Inicio'], ['sobre-mi', 'Sobre mí'], ['experiencia', 'Experiencia'], ['proyectos', 'Proyectos'], ['contacto', 'Contacto']];
+const NAMES = ['Alfa', 'Beta', 'Gamma', 'Delta', 'Épsilon', 'Zeta', 'Eta', 'Theta', 'Iota', 'Kappa', 'Lambda', 'Mu', 'Nu', 'Xi', 'Ómicron', 'Pi', 'Rho', 'Sigma'];
+const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+const CATS = ['Todos', 'Web', 'API', 'Bots', 'Paneles', 'Otros'];
+const STATUS = ['En producción', 'En desarrollo', 'Archivado'];
+const DOT = { 'En producción': '#333', 'En desarrollo': '#9a9a9a', 'Archivado': '#d4d4d4' };
+const TECHS = 'ABCDEFGH'.split('').map(c => 'Tecnología ' + c);
+const WS = [['100%', '92%', '64%'], ['96%', '100%', '58%'], ['100%', '85%', '72%']];
+const P = NAMES.map((n, i) => ({
+  i, num: String(i + 1).padStart(2, '0'), title: 'Proyecto ' + n, slug: 'proyecto-' + norm(n), cat: CATS[1 + i % 5],
+  status: STATUS[[0, 0, 1, 0, 2, 1][i % 6]], year: 2026 - Math.floor(i / 3), featured: i === 0 || i === 4,
+  techs: Array.from({ length: [5, 3, 6, 4, 2, 5][i % 6] }, (_, k) => TECHS[(i * 3 + k) % 8]),
+  role: 'Rol en el proyecto', duration: [2, 3, 4, 6][i % 4] + ' meses',
+}));
+const view = p => { const w = WS[p.i % 3]; return { ...p, href: '#/' + p.slug, dot: DOT[p.status], w1: w[0], w2: w[1], w3: w[2],
+  tags3: p.techs.slice(0, 3).map(t => ({ t })), hasMore: p.techs.length > 3, more: '+' + (p.techs.length - 3), allTags: p.techs.map(t => ({ t })) }; };
+const SORTS = {
+  recientes: (a, b) => b.year - a.year || a.i - b.i,
+  antiguos: (a, b) => a.year - b.year || b.i - a.i,
+  destacados: (a, b) => (b.featured - a.featured) || a.i - b.i,
+  az: (a, b) => a.title.localeCompare(b.title, 'es'),
+};
+const IMGS = ['Imagen principal', 'Captura 1', 'Captura 2', 'Captura 3', 'Captura 4'];
+const SECTIONS = [['01', 'Descripción general'], ['02', 'El reto'], ['03', 'La solución'], ['04', 'Resultados']].map(([n, title]) => ({ n, title }));
+const readSlug = () => { const m = location.hash.match(/^#\/(.+)/); const s = m && decodeURIComponent(m[1]); return P.some(p => p.slug === s) ? s : null; };
+const EASE = 'cubic-bezier(.2,.8,.2,1)';
+
+class Component extends DCLogic {
+  state = {
+    q: '', cat: 'Todos', tech: '', sort: 'recientes', view: 'grid', limit: 12, slug: readSlug(), lb: null,
+    mobile: window.innerWidth < 820, menuOpen: false,
+    chatOpen: false, chatStarted: false, typing: false, chatInput: '',
+    msgs: [{ from: 'bot', text: 'Hola, ¿en qué puedo ayudarte?' }, { from: 'user', text: 'Mensaje de ejemplo del usuario' }],
+  };
+  wrapRef = React.createRef(); chipsRef = React.createRef(); indRef = React.createRef(); heroImgRef = React.createRef();
+  lbRef = React.createRef(); lbPanelRef = React.createRef(); msgsRef = React.createRef();
+  timers = [];
+
+  componentDidMount() {
+    this.reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { this.io.unobserve(e.target); this.show(e.target); }
+    }), { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    this.ready = true;
+    this.scan();
+    this.onScroll = () => this.checkPending();
+    this.onResize = () => {
+      const m = window.innerWidth < 820;
+      if (m !== this.state.mobile) this.setState({ mobile: m, menuOpen: false });
+      this.placeInd(false); this.checkPending();
+    };
+    this.onHash = () => { this.setState({ slug: readSlug(), lb: null, menuOpen: false }); window.scrollTo(0, 0); };
+    this.onKey = e => {
+      if (this.state.lb == null) return;
+      if (e.key === 'Escape') this.closeLb();
+      else if (e.key === 'ArrowRight') this.stepLb(1);
+      else if (e.key === 'ArrowLeft') this.stepLb(-1);
+    };
+    this.onOver = e => {
+      const g = e.target.closest ? e.target.closest('[data-hg]') : null;
+      if (g === this.hg) return;
+      if (this.hg) this.hg.querySelectorAll('[data-hfx]').forEach(c => { c.style.transform = ''; });
+      this.hg = g;
+      if (g) g.querySelectorAll('[data-hfx]').forEach(c => { c.style.transform = c.getAttribute('data-hfx'); });
+    };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    window.addEventListener('resize', this.onResize);
+    window.addEventListener('hashchange', this.onHash);
+    window.addEventListener('keydown', this.onKey);
+    document.addEventListener('pointerover', this.onOver);
+    this.placeInd(false);
+    if (document.fonts) document.fonts.ready.then(() => this.placeInd(false));
+    this.lastSlug = this.state.slug; this.lastLb = null;
+    if (this.state.slug) this.zoomHero();
+  }
+
+  componentDidUpdate() {
+    if (this.snap) this.flip();
+    this.scan();
+    this.placeInd(true);
+    const m = this.msgsRef.current; if (m) m.scrollTop = m.scrollHeight;
+    if (this.fadeIn) {
+      this.fadeIn = false;
+      const w = this.wrapRef.current;
+      if (w) requestAnimationFrame(() => { w.style.opacity = '1'; w.style.transform = 'none'; });
+    }
+    if (this.state.slug !== this.lastSlug) { this.lastSlug = this.state.slug; if (this.state.slug) this.zoomHero(); }
+    if (this.state.lb != null && this.lastLb == null && !this.reduce) {
+      if (this.lbRef.current) this.lbRef.current.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220, easing: 'ease-out' });
+      if (this.lbPanelRef.current) this.lbPanelRef.current.animate([{ opacity: 0, transform: 'scale(.94)' }, { opacity: 1, transform: 'scale(1)' }], { duration: 280, easing: EASE });
+    }
+    this.lastLb = this.state.lb;
+  }
+
+  componentWillUnmount() {
+    this.timers.forEach(clearTimeout);
+    window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('hashchange', this.onHash);
+    window.removeEventListener('keydown', this.onKey);
+    document.removeEventListener('pointerover', this.onOver);
+    this.io && this.io.disconnect();
+  }
+
+  scan() {
+    document.querySelectorAll('[data-reveal]:not([data-rv])').forEach(el => {
+      if (this.reduce) { el.setAttribute('data-rv', 'done'); return; }
+      const p = el.parentElement;
+      let d = 0;
+      if (p && p.hasAttribute('data-stagger')) d = Math.min(8, [...p.children].filter(c => c.hasAttribute('data-reveal')).indexOf(el)) * 70;
+      el.dataset.delay = d;
+      el.style.opacity = '0'; el.style.filter = 'blur(8px)'; el.style.transform = 'translateY(30px)';
+      el.setAttribute('data-rv', 'pending');
+      if (this.ready) this.io.observe(el);
+    });
+    if (this.ready) this.checkPending();
+  }
+
+  checkPending() {
+    const h = window.innerHeight;
+    document.querySelectorAll('[data-rv="pending"]').forEach(el => {
+      if (el.getBoundingClientRect().top < h * 0.92) { this.io.unobserve(el); this.show(el); }
+    });
+  }
+
+  show(el) {
+    const d = +el.dataset.delay || 0;
+    el.style.transition = 'opacity .6s ease-out ' + d + 'ms, filter .6s ease-out ' + d + 'ms, transform .6s ease-out ' + d + 'ms';
+    void el.offsetWidth;
+    el.style.opacity = '1'; el.style.filter = 'blur(0)'; el.style.transform = 'translateY(0)';
+    el.setAttribute('data-rv', 'done');
+    setTimeout(() => { el.style.transition = ''; el.style.filter = ''; el.style.transform = ''; }, 650 + d);
+  }
+
+  capture() {
+    const w = this.wrapRef.current;
+    if (this.reduce || !w) return;
+    const snap = new Map();
+    w.querySelectorAll('[data-pk]').forEach(el => snap.set(el.getAttribute('data-pk'), { r: el.getBoundingClientRect(), c: el.cloneNode(true) }));
+    this.snap = snap;
+  }
+
+  flip() {
+    const snap = this.snap; this.snap = null;
+    const w = this.wrapRef.current; if (!w) return;
+    const seen = new Set();
+    w.querySelectorAll('[data-pk]').forEach(el => {
+      const k = el.getAttribute('data-pk'); seen.add(k);
+      const o = snap.get(k), r = el.getBoundingClientRect();
+      if (!o || !el.hasAttribute('data-rv')) {
+        el.setAttribute('data-rv', 'done');
+        el.style.opacity = ''; el.style.filter = ''; el.style.transform = ''; el.style.transition = '';
+        el.animate([{ opacity: 0, transform: 'scale(.94)' }, { opacity: 1, transform: 'scale(1)' }], { duration: 380, delay: 140, easing: EASE, fill: 'backwards' });
+        return;
+      }
+      const dx = o.r.left - r.left, dy = o.r.top - r.top;
+      if (dx || dy) el.animate([{ transform: 'translate(' + dx + 'px,' + dy + 'px)' }, { transform: 'translate(0,0)' }], { duration: 460, easing: EASE });
+    });
+    snap.forEach((o, k) => {
+      if (seen.has(k) || o.r.bottom < 0 || o.r.top > window.innerHeight) return;
+      const g = o.c;
+      g.removeAttribute('data-pk'); g.removeAttribute('data-reveal');
+      Object.assign(g.style, { position: 'absolute', left: (o.r.left + window.scrollX) + 'px', top: (o.r.top + window.scrollY) + 'px',
+        width: o.r.width + 'px', height: o.r.height + 'px', margin: '0', pointerEvents: 'none', zIndex: '5', opacity: '1', filter: 'none', transform: 'none', transition: 'none' });
+      document.body.appendChild(g);
+      const a = g.animate([{ opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(.92)' }], { duration: 260, easing: 'ease-in', fill: 'forwards' });
+      a.onfinish = () => g.remove();
+    });
+  }
+
+  placeInd(anim) {
+    const c = this.chipsRef.current, ind = this.indRef.current;
+    if (!c || !ind) return;
+    const a = c.querySelector('[data-on="1"]'); if (!a) return;
+    const t = 'translate(' + a.offsetLeft + 'px,' + a.offsetTop + 'px)', w = a.offsetWidth + 'px';
+    if (ind.style.transform === t && ind.style.width === w) return;
+    const fresh = this.indEl !== ind; this.indEl = ind;
+    ind.style.transition = anim && !fresh && !this.reduce ? 'transform .38s ' + EASE + ', width .38s ' + EASE : 'none';
+    ind.style.transform = t; ind.style.width = w; ind.style.height = a.offsetHeight + 'px';
+  }
+
+  zoomHero() {
+    const el = this.heroImgRef.current;
+    if (el && !this.reduce) el.animate([{ transform: 'scale(1.05)' }, { transform: 'scale(1)' }], { duration: 1100, easing: EASE });
+  }
+
+  setView(v) {
+    if (v === this.state.view) return;
+    const w = this.wrapRef.current;
+    if (this.reduce || !w) { this.setState({ view: v }); return; }
+    w.style.transition = 'opacity .18s ease, transform .18s ease';
+    w.style.opacity = '0'; w.style.transform = 'translateY(8px)';
+    this.timers.push(setTimeout(() => { this.fadeIn = true; this.setState({ view: v }); }, 180));
+  }
+
+  closeLb() {
+    const o = this.lbRef.current, p = this.lbPanelRef.current;
+    if (!o || this.reduce) { this.setState({ lb: null }); return; }
+    if (p) p.animate([{ opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(.94)' }], { duration: 180, easing: 'ease-in', fill: 'forwards' });
+    const a = o.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, easing: 'ease-in', fill: 'forwards' });
+    a.onfinish = () => this.setState({ lb: null });
+  }
+  stepLb(d) { this.setState(s => ({ lb: (s.lb + d + IMGS.length) % IMGS.length })); }
+
+  reply() {
+    this.setState({ typing: true });
+    this.timers.push(setTimeout(() => this.setState(s => ({
+      typing: false, msgs: [...s.msgs, { from: 'bot', text: 'Respuesta automática de ejemplo. Texto breve de dos líneas.' }],
+    })), 1600));
+  }
+  send() {
+    const t = this.state.chatInput.trim() || 'Mensaje de ejemplo';
+    this.setState(s => ({ msgs: [...s.msgs, { from: 'user', text: t }], chatInput: '' }));
+    this.reply();
+  }
+
+  renderVals() {
+    const s = this.state, mob = s.mobile;
+    const q = norm(s.q.trim());
+    const list = P.filter(p => (s.cat === 'Todos' || p.cat === s.cat) && (!s.tech || p.techs.includes(s.tech)) &&
+      (!q || norm(p.title).includes(q) || norm(p.cat).includes(q) || p.techs.some(t => norm(t).includes(q)))).sort(SORTS[s.sort]);
+    const active = !!(s.q.trim() || s.cat !== 'Todos' || s.tech);
+    const shown = list.slice(0, s.limit).map(view);
+    const d = s.slug ? P.find(p => p.slug === s.slug) : null;
+    const setF = patch => { this.capture(); this.setState({ ...patch, limit: 12 }); };
+    const vb = on => [on ? '#fff' : 'transparent', on ? '0 1px 3px rgba(0,0,0,.08)' : 'none', on ? '#333' : '#9a9a9a'];
+    const [gB, gS, gC] = vb(s.view === 'grid'), [lB, lS, lC] = vb(s.view === 'list');
+    let detail = { d: {}, prev: {}, next: {}, others: [], facts: [], thumbs: [] };
+    if (d) {
+      const n = P.length;
+      const others = P.filter(p => p.cat === d.cat && p !== d).concat(P.filter(p => p.cat !== d.cat && p !== d)).slice(0, 3);
+      detail = { d: view(d), prev: view(P[(d.i - 1 + n) % n]), next: view(P[(d.i + 1) % n]), others: others.map(view),
+        facts: [['AÑO', d.year], ['ROL', d.role], ['DURACIÓN', d.duration], ['CATEGORÍA', d.cat]].map(([k, v]) => ({ k, v })),
+        thumbs: IMGS.slice(1).map((label, k) => ({ label, i: k + 1 })) };
+    }
+    return {
+      showTags: this.props.showTags ?? true,
+      isList: !d, isDetail: !!d, ...detail, sections: SECTIONS,
+      navLinksDisplay: mob ? 'none' : 'flex', burgerDisplay: mob ? 'flex' : 'none', menuVisible: mob && s.menuOpen,
+      toggleMenu: () => this.setState(x => ({ menuOpen: !x.menuOpen })),
+      links: NAV.map(([id, label]) => { const on = id === 'proyectos'; return { id, label, href: on ? 'Proyectos.dc.html' : LANDING + '#' + id,
+        color: on ? '#333' : '#9a9a9a', weight: on ? 700 : 500, bg: on ? '#f0f0f0' : 'transparent' }; }),
+      wrapRef: this.wrapRef, chipsRef: this.chipsRef, indRef: this.indRef, heroImgRef: this.heroImgRef, lbRef: this.lbRef, lbPanelRef: this.lbPanelRef, msgsRef: this.msgsRef,
+      q: s.q, tech: s.tech, sort: s.sort,
+      onQ: e => setF({ q: e.target.value }),
+      onTech: e => setF({ tech: e.target.value }),
+      onSort: e => { this.capture(); this.setState({ sort: e.target.value }); },
+      chips: CATS.map(c => { const on = s.cat === c; return { label: c, on: on ? '1' : '0', color: on ? '#fff' : '#333', border: on ? '#333' : '#e5e5e5', select: () => { if (!on) setF({ cat: c }); } }; }),
+      filtersActive: active,
+      clearFilters: e => { if (e && e.preventDefault) e.preventDefault(); setF({ q: '', cat: 'Todos', tech: '', sort: 'recientes' }); },
+      setGrid: () => this.setView('grid'), setList: () => this.setView('list'),
+      setGridBg: gB, setGridSh: gS, setGridColor: gC, setListBg: lB, setListSh: lS, setListColor: lC,
+      isGrid: s.view === 'grid', isListView: s.view === 'list',
+      shown, hasResults: list.length > 0, isEmpty: list.length === 0,
+      countLabel: list.length + (list.length === 1 ? ' proyecto' : ' proyectos'),
+      shownLabel: 'Mostrando ' + shown.length + ' de ' + list.length,
+      hasMore: list.length > s.limit,
+      loadMore: () => { this.capture(); this.setState(x => ({ limit: x.limit + 6 })); },
+      showFeatured: !active, featured: P.filter(p => p.featured).map(view),
+      openImg: e => this.setState({ lb: +e.currentTarget.dataset.i }),
+      lbOpen: s.lb != null, lbLabel: s.lb != null ? IMGS[s.lb] : '', lbCount: s.lb != null ? (s.lb + 1) + ' / ' + IMGS.length : '',
+      lbClose: () => this.closeLb(), lbPrev: () => this.stepLb(-1), lbNext: () => this.stepLb(1), stop: e => e.stopPropagation(),
+      chatOpacity: s.chatOpen ? 1 : 0,
+      chatTransform: s.chatOpen ? 'scale(1)' : 'scale(.85) translateY(12px)',
+      chatPointer: s.chatOpen ? 'auto' : 'none',
+      toggleChat: () => {
+        const open = !this.state.chatOpen;
+        this.setState({ chatOpen: open });
+        if (open && !this.state.chatStarted) { this.setState({ chatStarted: true }); this.reply(); }
+      },
+      msgs: s.msgs.map(x => x.from === 'user'
+        ? { ...x, align: 'flex-end', bg: '#333', color: '#fff', border: '#333', radius: '14px 14px 4px 14px' }
+        : { ...x, align: 'flex-start', bg: '#fff', color: '#333', border: '#e5e5e5', radius: '14px 14px 14px 4px' }),
+      typing: s.typing, chatInput: s.chatInput,
+      onChatInput: e => this.setState({ chatInput: e.target.value }),
+      onChatKey: e => { if (e.key === 'Enter') this.send(); },
+      send: () => this.send(),
+    };
+  }
+}
+</script>
+</body>
+</html>

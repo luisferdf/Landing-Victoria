@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:#fff;font-family:'Poppins',system-ui,-apple-system,sans-serif;color:#333;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#333;text-decoration:none}
+a:hover{color:#000}
+input,textarea,button{font-family:inherit}
+input::placeholder,textarea::placeholder{color:#b5b5b5}
+@keyframes ld{from{width:0}to{width:100%}}
+@keyframes blink{50%{opacity:0}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes dot{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-5px);opacity:1}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+
+<sc-if value="{{ loaderVisible }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Loader" style="position:fixed;inset:0;z-index:100;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transition:opacity .5s ease;opacity:{{ loaderOpacity }}"><sc-if value="{{ showTags }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;top:16px;left:16px;right:16px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;pointer-events:none"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;white-space:nowrap;color:#9a9a9a;border:1px dashed #d4d4d4;border-radius:6px;padding:3px 8px">&lt;Loader /&gt;</span><span style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:#b0b0b0">AnimatePresence: exit opacity 1→0 · barra width 0→100%</span></div></sc-if>
+    <div style="font-size:32px;font-weight:800;letter-spacing:-0.02em;color:#333">PORTFOLIO.</div>
+    <div style="font-size:11px;letter-spacing:.3em;color:#9a9a9a;font-weight:600">CARGANDO</div>
+    <div style="width:200px;height:3px;border-radius:3px;background:#f0f0f0;overflow:hidden">
+      <div style="height:100%;width:100%;background:#333;border-radius:3px;animation:ld 1.4s ease-in-out forwards"></div>
+    </div>
+  </div>
+</sc-if>
+
+<header style="position:fixed;top:16px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:1160px;z-index:50">
+  <nav style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 12px 10px 24px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border:1px solid #e5e5e5;border-radius:999px;box-shadow:0 6px 24px rgba(0,0,0,.06)">
+    <a href="#inicio" onClick="{{ goHome }}" style="font-weight:800;font-size:18px;letter-spacing:-0.02em;color:#333">PORTFOLIO.</a>
+    <div style="display:{{ navLinksDisplay }};gap:4px;align-items:center">
+      <sc-for list="{{ links }}" as="l" hint-placeholder-count="5">
+        <a href="#{{ l.id }}" onClick="{{ l.go }}" style="padding:8px 14px;border-radius:999px;font-size:14px;font-weight:{{ l.weight }};color:{{ l.color }};background:{{ l.bg }};transition:color .2s, background .2s">{{ l.label }}</a>
+      </sc-for>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button title="Tema" style="width:40px;height:40px;border-radius:50%;border:1px solid #e5e5e5;background:#f0f0f0;cursor:pointer;font-size:9px;color:#9a9a9a;letter-spacing:.05em" style-active="transform:scale(.94)">ICONO</button>
+      <button onClick="{{ toggleMenu }}" aria-label="Menú" style="display:{{ burgerDisplay }};width:40px;height:40px;border-radius:50%;border:1px solid #e5e5e5;background:#fff;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:4px" style-active="transform:scale(.94)">
+        <span style="width:16px;height:2px;background:#333;border-radius:2px"></span>
+        <span style="width:16px;height:2px;background:#333;border-radius:2px"></span>
+        <span style="width:16px;height:2px;background:#333;border-radius:2px"></span>
+      </button>
+    </div>
+  </nav>
+  <sc-if value="{{ menuVisible }}" hint-placeholder-val="{{ false }}">
+    <div style="margin-top:8px;background:#fff;border:1px solid #e5e5e5;border-radius:16px;box-shadow:0 12px 32px rgba(0,0,0,.08);padding:8px;display:flex;flex-direction:column">
+      <sc-for list="{{ links }}" as="l" hint-placeholder-count="5">
+        <a href="#{{ l.id }}" onClick="{{ l.go }}" style="padding:12px 16px;border-radius:10px;font-size:15px;font-weight:{{ l.weight }};color:{{ l.color }};background:{{ l.bg }}">{{ l.label }}</a>
+      </sc-for>
+    </div>
+  </sc-if>
+</header>
+
+<main>
+<!-- HERO -->
+<section id="inicio" data-screen-label="Hero" style="position:relative;min-height:100vh;padding:140px 24px 80px;display:flex;align-items:center">
+  <sc-if value="{{ showTags }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;top:96px;left:16px;right:16px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;pointer-events:none"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;white-space:nowrap;color:#9a9a9a;border:1px dashed #d4d4d4;border-radius:6px;padding:3px 8px">&lt;Hero /&gt;</span><span style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:#b0b0b0">whileInView: blur 8px→0, opacity 0→1, y 30→0 · stagger 0.1s · badges: animate y [0,-8,0], repeat: Infinity, delay escalonado</span></div></sc-if>
+  <div style="max-width:1200px;width:100%;margin:0 auto;display:flex;flex-wrap:wrap-reverse;align-items:center;justify-content:space-between;gap:64px">
+    <div style="flex:1 1 440px;display:flex;flex-direction:column;gap:24px">
+      <h1 data-reveal="" style="margin:0;font-size:clamp(44px,7vw,80px);line-height:1.02;font-weight:800;letter-spacing:-0.03em;color:#333">Hola, soy [Nombre]</h1>
+      <div data-reveal="" style="font-size:clamp(20px,2.4vw,28px);font-weight:500;color:#9a9a9a;min-height:1.4em">
+        <span ref="{{ typeRef }}"></span><span style="display:inline-block;width:2px;height:1em;background:#333;margin-left:4px;vertical-align:-0.12em;animation:blink 1s steps(1) infinite"></span>
+      </div>
+      <div data-reveal="" style="display:flex;flex-direction:column;gap:10px;max-width:520px">
+        <div style="height:10px;border-radius:6px;background:#e5e5e5;width:100%"></div>
+        <div style="height:10px;border-radius:6px;background:#e5e5e5;width:94%"></div>
+        <div style="height:10px;border-radius:6px;background:#e5e5e5;width:88%"></div>
+        <div style="height:10px;border-radius:6px;background:#e5e5e5;width:60%"></div>
+      </div>
+      <div data-reveal="" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px">
+        <a href="#proyectos" onClick="{{ goProjects }}" data-hg="" style="display:flex;align-items:center;gap:10px;padding:14px 26px;border-radius:12px;background:#333;color:#fff;font-weight:600;font-size:15px;border:1px solid #333;transition:transform .15s" style-active="transform:scale(.97)">Ver mi trabajo <span data-hfx="translateX(5px)" style="display:inline-block;transition:transform .25s ease">→</span></a>
+        <a href="#" onClick="{{ noop }}" style="display:flex;align-items:center;padding:14px 26px;border-radius:12px;background:#fff;color:#333;font-weight:600;font-size:15px;border:1px solid #333;transition:transform .15s" style-active="transform:scale(.97)">Descargar CV</a>
+      </div>
+      <div data-reveal="" style="display:flex;align-items:center;gap:16px;margin-top:8px">
+        <span style="font-size:11px;letter-spacing:.25em;color:#9a9a9a;font-weight:600">CONECTA</span>
+        <div style="display:flex;gap:10px">
+          <span style="width:36px;height:36px;border-radius:10px;border:1px solid #e5e5e5;background:#f0f0f0"></span>
+          <span style="width:36px;height:36px;border-radius:10px;border:1px solid #e5e5e5;background:#f0f0f0"></span>
+          <span style="width:36px;height:36px;border-radius:10px;border:1px solid #e5e5e5;background:#f0f0f0"></span>
+        </div>
+      </div>
+    </div>
+    <div style="flex:0 1 400px;display:flex;justify-content:center;padding:0 24px">
+      <div style="position:relative;width:100%;max-width:320px">
+        <div data-reveal="" style="width:100%;aspect-ratio:1;border-radius:50%;border:1px solid #e5e5e5;background:linear-gradient(to top right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),linear-gradient(to bottom right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),#f0f0f0;display:flex;align-items:center;justify-content:center">
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#9a9a9a;background:#fff;padding:2px 8px;border-radius:4px">Foto</span>
+        </div>
+        <div data-stagger="" style="position:absolute;left:-36px;bottom:-8px;display:flex;flex-direction:column;gap:10px">
+          <div data-reveal=""><div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;border:1px solid #e5e5e5;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.08);animation:bob 3.2s ease-in-out infinite">
+            <span style="width:24px;height:24px;border-radius:6px;background:#e5e5e5"></span><span style="width:90px;height:8px;border-radius:6px;background:#e5e5e5"></span>
+          </div></div>
+          <div data-reveal=""><div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;border:1px solid #e5e5e5;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.08);animation:bob 3.2s ease-in-out .6s infinite">
+            <span style="width:24px;height:24px;border-radius:6px;background:#e5e5e5"></span><span style="width:70px;height:8px;border-radius:6px;background:#e5e5e5"></span>
+          </div></div>
+          <div data-reveal=""><div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;border:1px solid #e5e5e5;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.08);animation:bob 3.2s ease-in-out 1.2s infinite">
+            <span style="width:24px;height:24px;border-radius:6px;background:#e5e5e5"></span><span style="width:80px;height:8px;border-radius:6px;background:#e5e5e5"></span>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE MÍ -->
+<section id="sobre-mi" data-screen-label="Sobre mí" style="position:relative;padding:120px 24px;border-top:1px solid #f0f0f0">
+  <sc-if value="{{ showTags }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;top:16px;left:16px;right:16px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;pointer-events:none"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;white-space:nowrap;color:#9a9a9a;border:1px dashed #d4d4d4;border-radius:6px;padding:3px 8px">&lt;About /&gt;</span><span style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:#b0b0b0">whileInView: blur 8px→0, opacity 0→1, y 30→0 · stagger 0.1s</span></div></sc-if>
+  <div style="max-width:1200px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:64px">
+      <div data-reveal="" style="font-size:12px;letter-spacing:.25em;color:#9a9a9a;font-weight:600;margin-bottom:12px">SOBRE MÍ</div>
+      <h2 data-reveal="" style="margin:0;font-size:clamp(36px,5vw,56px);font-weight:800;letter-spacing:-0.03em;color:#333">Título de la sección</h2>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:56px;align-items:stretch">
+      <div data-reveal="" style="position:relative;flex:1 1 320px;min-height:420px;border-radius:16px;border:1px solid #e5e5e5;background:linear-gradient(to top right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),linear-gradient(to bottom right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),#f0f0f0;display:flex;align-items:center;justify-content:center"><span style="position:absolute;top:16px;right:16px;padding:6px 12px;border-radius:999px;background:#333;color:#fff;font-size:11px;font-weight:700;letter-spacing:.15em">DEV.</span>
+        <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#9a9a9a;background:#fff;padding:2px 8px;border-radius:4px">Foto</span>
+      </div>
+      <div style="flex:1.6 1 420px;display:flex;flex-direction:column;gap:40px">
+        <div data-stagger="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:32px">
+          <div data-reveal="" style="display:flex;flex-direction:column;gap:10px">
+            <h3 style="margin:0 0 6px;font-size:20px;font-weight:700;color:#333">Subtítulo breve</h3>
+            <div style="height:10px;border-radius:6px;background:#e5e5e5;width:100%"></div>
+            <div style="height:10px;border-radius:6px;background:#e5e5e5;width:92%"></div>
+            <div style="height:10px;border-radius:6px;background:#e5e5e5;width:96%"></div>
+            <div style="height:10px;border-radius:6px;background:#e5e5e5;width:70%"></div>
+          </div>
+          <div data-reveal="" style="display:flex;flex-direction:column;gap:10px">
+            <h3 style="margin:0 0 6px;font-size:20px;font-weight:700;color:#333">Subtítulo breve</h3>
+            <div style="height:10px;border-radius:6px;background:#e5e5e5;width:96%"></div>
+            <div style="height:10px;border-radius:6px;background:#e5e5e5;width:100%"></div>
+            <div style="height:10px;border-radius:6px;background:#e5e5e5;width:84%"></div>
+            <div style="height:10px;border-radius:6px;background:#e5e5e5;width:58%"></div>
+          </div>
+        </div>
+        <div data-reveal="" style="border-left:3px solid #333;padding-left:24px">
+          <div style="font-size:12px;letter-spacing:.25em;color:#9a9a9a;font-weight:600;margin-bottom:20px">DATOS PERSONALES</div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 32px">
+            <sc-for list="{{ datos }}" as="d" hint-placeholder-count="6">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <span style="font-size:11px;letter-spacing:.15em;color:#9a9a9a;font-weight:600">ETIQUETA</span>
+                <span style="height:10px;border-radius:6px;background:#e5e5e5;width:{{ d.w }}"></span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCIA -->
+<section id="experiencia" data-screen-label="Experiencia" style="position:relative;padding:120px 24px;background:#fafafa;border-top:1px solid #f0f0f0">
+  <sc-if value="{{ showTags }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;top:16px;left:16px;right:16px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;pointer-events:none"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;white-space:nowrap;color:#9a9a9a;border:1px dashed #d4d4d4;border-radius:6px;padding:3px 8px">&lt;Experience /&gt;</span><span style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:#b0b0b0">useScroll + scaleY en la línea de tiempo · whileInView + stagger 0.1s en tarjetas y etiquetas</span></div></sc-if>
+  <div style="max-width:1200px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:64px">
+      <div data-reveal="" style="font-size:12px;letter-spacing:.25em;color:#9a9a9a;font-weight:600;margin-bottom:12px">EXPERIENCIA</div>
+      <h2 data-reveal="" style="margin:0;font-size:clamp(36px,5vw,56px);font-weight:800;letter-spacing:-0.03em;color:#333">Título de la sección</h2>
+    </div>
+    <div ref="{{ tlRef }}" style="position:relative;display:flex;flex-direction:column;gap:48px;padding:8px 0">
+      <div style="position:absolute;top:0;bottom:0;left:{{ lineLeft }};width:2px;transform:translateX(-50%);background:#e5e5e5;border-radius:2px">
+        <div ref="{{ fillRef }}" style="position:absolute;top:0;left:0;width:100%;height:0;background:#333;border-radius:2px"></div>
+      </div>
+      <sc-for list="{{ exp }}" as="it" hint-placeholder-count="3">
+        <div style="position:relative;display:flex;justify-content:{{ it.justify }}">
+          <span style="position:absolute;left:{{ lineLeft }};top:30px;width:14px;height:14px;border-radius:50%;border:2px solid #333;background:#fff;transform:translateX(-50%);z-index:1"></span>
+          <div data-reveal="" style="width:{{ cardW }}">
+            <div style="background:#fff;border:1px solid #e5e5e5;border-radius:16px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.03);display:flex;flex-direction:column;gap:10px">
+              <span style="font-size:13px;color:#9a9a9a">{{ it.date }}</span>
+              <h3 style="margin:0;font-size:20px;font-weight:700;color:#333">Puesto o rol</h3>
+              <span style="font-size:11px;letter-spacing:.2em;color:#9a9a9a;font-weight:600">NOMBRE DE LA EMPRESA</span>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px">
+                <div style="height:9px;border-radius:6px;background:#e5e5e5;width:100%"></div>
+                <div style="height:9px;border-radius:6px;background:#e5e5e5;width:90%"></div>
+                <div style="height:9px;border-radius:6px;background:#e5e5e5;width:65%"></div>
+              </div>
+              <div data-stagger="" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">
+                <span data-reveal="" style="padding:5px 12px;border-radius:999px;border:1px solid #e5e5e5;background:#f0f0f0;font-size:12px;color:#9a9a9a">Etiqueta</span>
+                <span data-reveal="" style="padding:5px 12px;border-radius:999px;border:1px solid #e5e5e5;background:#f0f0f0;font-size:12px;color:#9a9a9a">Etiqueta</span>
+                <span data-reveal="" style="padding:5px 12px;border-radius:999px;border:1px solid #e5e5e5;background:#f0f0f0;font-size:12px;color:#9a9a9a">Etiqueta</span>
+                <span data-reveal="" style="padding:5px 12px;border-radius:999px;border:1px solid #e5e5e5;background:#f0f0f0;font-size:12px;color:#9a9a9a">Etiqueta</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack" data-screen-label="Stack" style="position:relative;padding:120px 24px;border-top:1px solid #f0f0f0">
+  <sc-if value="{{ showTags }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;top:16px;left:16px;right:16px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;pointer-events:none"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;white-space:nowrap;color:#9a9a9a;border:1px dashed #d4d4d4;border-radius:6px;padding:3px 8px">&lt;TechStack /&gt;</span><span style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:#b0b0b0">whileInView + stagger 0.1s · whileHover: y -4</span></div></sc-if>
+  <div style="max-width:1200px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:64px">
+      <div data-reveal="" style="font-size:12px;letter-spacing:.25em;color:#9a9a9a;font-weight:600;margin-bottom:12px">STACK TECNOLÓGICO</div>
+      <h2 data-reveal="" style="margin:0;font-size:clamp(36px,5vw,56px);font-weight:800;letter-spacing:-0.03em;color:#333">Título de la sección</h2>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:24px">
+      <sc-for list="{{ stack }}" as="row" hint-placeholder-count="2">
+        <div data-reveal="" style="display:flex;flex-wrap:wrap;align-items:center;gap:32px;padding:32px;border:1px solid #e5e5e5;border-radius:16px;background:#fff">
+          <div style="flex:1 1 220px;display:flex;flex-direction:column;gap:10px">
+            <h3 style="margin:0;font-size:22px;font-weight:700;color:#333">{{ row.cat }}</h3>
+            <div style="height:9px;border-radius:6px;background:#e5e5e5;width:80%"></div>
+          </div>
+          <div data-stagger="" style="flex:2 1 400px;display:grid;grid-template-columns:repeat({{ row.cols }},minmax(0,1fr));row-gap:16px">
+            <sc-for list="{{ row.tiles }}" as="t" hint-placeholder-count="4">
+              <div data-reveal="" style="border-left:{{ t.border }}">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:12px 8px;transition:transform .25s ease" style-hover="transform:translateY(-4px)">
+                  <span style="width:48px;height:48px;border-radius:12px;border:1px solid #e5e5e5;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:8px;color:#9a9a9a;letter-spacing:.05em">ICONO</span>
+                  <span style="font-size:13px;color:#9a9a9a">Tecnología</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- PROYECTOS -->
+<section id="proyectos" data-screen-label="Proyectos" style="position:relative;padding:120px 24px;background:#fafafa;border-top:1px solid #f0f0f0">
+  <sc-if value="{{ showTags }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;top:16px;left:16px;right:16px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;pointer-events:none"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;white-space:nowrap;color:#9a9a9a;border:1px dashed #d4d4d4;border-radius:6px;padding:3px 8px">&lt;Projects /&gt;</span><span style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:#b0b0b0">drag="x" + useMotionValue / animate(x) para el carrusel · whileHover: y -6 · imagen scale 1.06</span></div></sc-if>
+  <div style="max-width:1200px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:64px">
+      <div data-reveal="" style="font-size:12px;letter-spacing:.25em;color:#9a9a9a;font-weight:600;margin-bottom:12px">PROYECTOS</div>
+      <h2 data-reveal="" style="margin:0;font-size:clamp(36px,5vw,56px);font-weight:800;letter-spacing:-0.03em;color:#333">Título de la sección</h2>
+    </div>
+    <div data-reveal="">
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:20px">
+        <button onClick="{{ prevSlide }}" aria-label="Anterior" style="width:44px;height:44px;border-radius:50%;border:1px solid #333;background:#fff;color:#333;cursor:pointer;font-size:16px;transition:transform .15s" style-active="transform:scale(.92)">←</button>
+        <button onClick="{{ nextSlide }}" aria-label="Siguiente" style="width:44px;height:44px;border-radius:50%;border:1px solid #333;background:#333;color:#fff;cursor:pointer;font-size:16px;transition:transform .15s" style-active="transform:scale(.92)">→</button>
+      </div>
+      <div ref="{{ vpRef }}" onPointerDown="{{ onDragStart }}" style="overflow:hidden;margin:-16px;padding:16px;touch-action:pan-y;cursor:grab;user-select:none">
+        <div ref="{{ trackRef }}" style="display:flex;gap:28px;will-change:transform">
+          <sc-for list="{{ slides }}" as="p" hint-placeholder-count="3">
+            <div style="flex:0 0 {{ slideBasis }};min-width:0">
+              <article data-hg="" style="height:100%;display:flex;flex-direction:column;background:#fff;border:1px solid #e5e5e5;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.03);transition:transform .3s ease, box-shadow .3s ease" style-hover="transform:translateY(-6px);box-shadow:0 20px 44px rgba(0,0,0,.10)">
+                <div style="aspect-ratio:16/10;overflow:hidden;border-bottom:1px solid #e5e5e5">
+                  <div data-hfx="scale(1.06)" style="width:100%;height:100%;transition:transform .5s ease;background:linear-gradient(to top right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),linear-gradient(to bottom right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),#f0f0f0;display:flex;align-items:center;justify-content:center">
+                    <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#9a9a9a;background:#fff;padding:2px 8px;border-radius:4px">Captura</span>
+                  </div>
+                </div>
+                <div style="padding:24px;display:flex;flex-direction:column;gap:10px;flex:1">
+                  <span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-0.03em;color:#e5e5e5">{{ p.num }}</span>
+                  <h3 style="margin:0 0 4px;font-size:20px;font-weight:700;color:#333">Nombre del proyecto</h3>
+                  <div style="height:9px;border-radius:6px;background:#e5e5e5;width:100%"></div>
+                  <div style="height:9px;border-radius:6px;background:#e5e5e5;width:72%"></div>
+                  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">
+                    <sc-for list="{{ p.tags }}" as="t" hint-placeholder-count="3">
+                      <span style="padding:4px 10px;border-radius:999px;border:1px solid #e5e5e5;background:#f0f0f0;font-size:12px;color:#9a9a9a">Etiqueta</span>
+                    </sc-for>
+                    <sc-if value="{{ p.hasMore }}" hint-placeholder-val="{{ false }}">
+                      <span style="padding:4px 10px;border-radius:999px;border:1px solid #d4d4d4;background:#fff;font-size:12px;font-weight:600;color:#333">{{ p.more }}</span>
+                    </sc-if>
+                  </div>
+                  <div style="margin-top:auto;padding-top:14px;display:flex;align-items:center;gap:14px">
+                    <a href="Proyectos.dc.html#/{{ p.slug }}" style="flex:1;text-align:center;padding:12px;border-radius:12px;border:1px solid #333;background:#fff;color:#333;font-weight:600;font-size:12px;letter-spacing:.15em;cursor:pointer;transition:transform .15s" style-active="transform:scale(.97)">VER DETALLES</a>
+                    <a href="https://ejemplo.com" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:6px;font-size:13px;color:#9a9a9a;white-space:nowrap" style-hover="color:#333">
+                      <span style="width:22px;height:22px;border-radius:6px;border:1px solid #e5e5e5;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#333">↗</span>ejemplo.com
+                    </a>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    <div data-reveal="" style="display:flex;justify-content:center;margin-top:48px">
+      <a href="Proyectos.dc.html" style="display:inline-flex;padding:14px 32px;border-radius:12px;border:1px solid #333;background:#fff;color:#333;font-weight:600;font-size:12px;letter-spacing:.15em;cursor:pointer;transition:transform .15s" style-active="transform:scale(.97)">VER MÁS PROYECTOS ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto" data-screen-label="Contacto" style="position:relative;padding:120px 24px;border-top:1px solid #f0f0f0">
+  <sc-if value="{{ showTags }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;top:16px;left:16px;right:16px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;pointer-events:none"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;white-space:nowrap;color:#9a9a9a;border:1px dashed #d4d4d4;border-radius:6px;padding:3px 8px">&lt;Contact /&gt;</span><span style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:#b0b0b0">whileInView + stagger 0.1s · whileTap: scale 0.98</span></div></sc-if>
+  <div style="max-width:1200px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:64px">
+      <div data-reveal="" style="font-size:12px;letter-spacing:.25em;color:#9a9a9a;font-weight:600;margin-bottom:12px">CONTACTO</div>
+      <h2 data-reveal="" style="margin:0;font-size:clamp(36px,5vw,56px);font-weight:800;letter-spacing:-0.03em;color:#333">Título de la sección</h2>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+      <div data-stagger="" style="flex:1 1 340px;display:flex;flex-direction:column;gap:20px">
+        <div data-reveal="" style="display:flex;align-items:center;gap:12px">
+          <span style="width:40px;height:40px;border-radius:12px;border:1px solid #e5e5e5;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:8px;letter-spacing:.05em;color:#9a9a9a">ICONO</span>
+          <span style="font-size:18px;font-weight:600;color:#333">Ciudad</span>
+        </div>
+        <div data-reveal="" style="aspect-ratio:16/9;border-radius:16px;border:1px solid #e5e5e5;background:linear-gradient(to top right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),linear-gradient(to bottom right,transparent calc(50% - .5px),#d6d6d6 50%,transparent calc(50% + .5px)),#f0f0f0;display:flex;align-items:center;justify-content:center">
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#9a9a9a;background:#fff;padding:2px 8px;border-radius:4px">Mapa</span>
+        </div>
+        <div data-reveal="" style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ contacts }}" as="c" hint-placeholder-count="6">
+            <a href="#" onClick="{{ noop }}" style="display:flex;align-items:center;gap:14px;padding:12px 14px;border:1px solid #e5e5e5;border-radius:12px;background:#fff;transition:background .2s, border-color .2s, transform .2s" style-hover="background:#f7f7f7;border-color:#d4d4d4;transform:translateX(4px)">
+              <span style="width:36px;height:36px;flex:none;border-radius:10px;border:1px solid #e5e5e5;background:#f0f0f0"></span>
+              <span style="display:flex;flex-direction:column;gap:7px;flex:1;min-width:0">
+                <span style="font-size:11px;letter-spacing:.15em;color:#9a9a9a;font-weight:600">{{ c.label }}</span>
+                <span style="height:9px;border-radius:6px;background:#e5e5e5;width:{{ c.w }}"></span>
+              </span>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+      <div data-reveal="" style="flex:1.3 1 420px;min-width:0;border:1px solid #e5e5e5;border-radius:16px;padding:clamp(24px,5vw,48px);background:#fff;box-shadow:0 10px 40px rgba(0,0,0,.05)">
+      <h3 style="margin:0 0 8px;font-size:24px;font-weight:700;color:#333">Encabezado del formulario</h3>
+      <div style="height:9px;border-radius:6px;background:#e5e5e5;width:60%;margin-bottom:32px"></div>
+      <form onSubmit="{{ noop }}" style="display:flex;flex-direction:column;gap:20px">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px">
+          <label style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:11px;letter-spacing:.2em;color:#9a9a9a;font-weight:600">NOMBRE</span>
+            <input placeholder="Nombre" style="padding:14px 16px;border-radius:12px;border:1px solid #e5e5e5;font-size:15px;color:#333;outline:none;background:#fff" style-focus="border-color:#333">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:11px;letter-spacing:.2em;color:#9a9a9a;font-weight:600">CORREO</span>
+            <input placeholder="Correo" style="padding:14px 16px;border-radius:12px;border:1px solid #e5e5e5;font-size:15px;color:#333;outline:none;background:#fff" style-focus="border-color:#333">
+          </label>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:11px;letter-spacing:.2em;color:#9a9a9a;font-weight:600">MENSAJE</span>
+          <textarea placeholder="Mensaje" rows="5" style="padding:14px 16px;border-radius:12px;border:1px solid #e5e5e5;font-size:15px;color:#333;outline:none;resize:vertical;background:#fff" style-focus="border-color:#333"></textarea>
+        </label>
+        <button type="submit" style="width:100%;padding:16px;border-radius:12px;border:1px solid #333;background:#333;color:#fff;font-weight:600;font-size:13px;letter-spacing:.15em;cursor:pointer;transition:transform .15s" style-active="transform:scale(.98)">ENVIAR MENSAJE</button>
+      </form>
+    </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- FOOTER -->
+<footer data-screen-label="Footer" style="position:relative;padding:48px 24px;border-top:1px solid #e5e5e5;display:flex;flex-direction:column;align-items:center;gap:16px">
+  <sc-if value="{{ showTags }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;top:16px;left:16px;right:16px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;pointer-events:none"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;white-space:nowrap;color:#9a9a9a;border:1px dashed #d4d4d4;border-radius:6px;padding:3px 8px">&lt;Footer /&gt;</span><span style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:#b0b0b0">whileInView: opacity 0→1</span></div></sc-if>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center">
+    <p style="margin:0;font-size:14px;color:#333;font-weight:500">© 2026 TuMarca. Todos los derechos reservados.</p>
+    <p style="margin:0;font-size:12px;color:#9a9a9a">Hecho con Next.js y Tailwind CSS</p>
+  </div>
+  <div style="display:flex;gap:10px">
+    <span style="width:32px;height:32px;border-radius:8px;border:1px solid #e5e5e5;background:#f0f0f0"></span>
+    <span style="width:32px;height:32px;border-radius:8px;border:1px solid #e5e5e5;background:#f0f0f0"></span>
+    <span style="width:32px;height:32px;border-radius:8px;border:1px solid #e5e5e5;background:#f0f0f0"></span>
+  </div>
+</footer>
+
+<!-- CHAT -->
+<div data-screen-label="Chat" style="position:fixed;right:24px;bottom:96px;z-index:60;width:min(360px,calc(100vw - 48px));height:min(520px,calc(100vh - 140px));background:#fff;border:1px solid #e5e5e5;border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.14);display:flex;flex-direction:column;overflow:hidden;transform-origin:bottom right;transition:opacity .25s ease, transform .3s cubic-bezier(.2,.8,.2,1);opacity:{{ chatOpacity }};transform:{{ chatTransform }};pointer-events:{{ chatPointer }}">
+  <div style="display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid #e5e5e5">
+    <span style="width:40px;height:40px;border-radius:50%;background:#e5e5e5;flex:none"></span>
+    <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+      <span style="height:10px;width:110px;border-radius:6px;background:#d4d4d4"></span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:#9a9a9a"><span style="width:8px;height:8px;border-radius:50%;background:#3fb950"></span>En línea</span>
+    </div>
+    <button onClick="{{ toggleChat }}" aria-label="Cerrar" style="width:32px;height:32px;border-radius:50%;border:1px solid #e5e5e5;background:#fff;cursor:pointer;font-size:18px;line-height:1;color:#333" style-active="transform:scale(.92)">×</button>
+  </div>
+  <div ref="{{ msgsRef }}" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:#fafafa"><sc-if value="{{ showTags }}" hint-placeholder-val="{{ true }}"><span style="align-self:center;text-align:center;font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#b0b0b0">&lt;ChatWidget /&gt; · AnimatePresence: scale 0.85→1, opacity 0→1 · puntos: animate y, repeat: Infinity</span></sc-if>
+    <sc-for list="{{ msgs }}" as="m" hint-placeholder-count="2">
+      <div style="align-self:{{ m.align }};max-width:78%;padding:10px 14px;border-radius:{{ m.radius }};background:{{ m.bg }};color:{{ m.color }};font-size:14px;line-height:1.45;border:1px solid {{ m.border }}">{{ m.text }}</div>
+    </sc-for>
+    <sc-if value="{{ typing }}" hint-placeholder-val="{{ false }}">
+      <div style="align-self:flex-start;display:flex;gap:5px;padding:14px 16px;border-radius:14px 14px 14px 4px;background:#fff;border:1px solid #e5e5e5">
+        <span style="width:7px;height:7px;border-radius:50%;background:#9a9a9a;animation:dot 1.1s ease-in-out infinite"></span>
+        <span style="width:7px;height:7px;border-radius:50%;background:#9a9a9a;animation:dot 1.1s ease-in-out .15s infinite"></span>
+        <span style="width:7px;height:7px;border-radius:50%;background:#9a9a9a;animation:dot 1.1s ease-in-out .3s infinite"></span>
+      </div>
+    </sc-if>
+  </div>
+  <div style="display:flex;gap:8px;padding:12px;border-top:1px solid #e5e5e5">
+    <input value="{{ chatInput }}" onChange="{{ onChatInput }}" onKeyDown="{{ onChatKey }}" placeholder="Escribe un mensaje…" style="flex:1;min-width:0;padding:12px 14px;border-radius:12px;border:1px solid #e5e5e5;font-size:14px;outline:none;color:#333" style-focus="border-color:#333">
+    <button onClick="{{ send }}" aria-label="Enviar" style="width:44px;height:44px;flex:none;border-radius:12px;border:none;background:#333;color:#fff;cursor:pointer;font-size:16px" style-active="transform:scale(.94)">→</button>
+  </div>
+</div>
+<button onClick="{{ toggleChat }}" aria-label="Chat" style="position:fixed;right:24px;bottom:24px;z-index:61;width:56px;height:56px;border-radius:50%;border:none;background:#333;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;transition:transform .15s" style-active="transform:scale(.92)">
+  <span style="width:22px;height:18px;border-radius:6px;border:2px solid #fff"></span>
+  <span style="position:absolute;top:-2px;right:-2px;padding:2px 6px;border-radius:999px;background:#fff;border:1px solid #333;color:#333;font-size:9px;font-weight:700;letter-spacing:.05em">AI</span>
+</button>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showTags&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Wireframe&quot;},&quot;showLoader&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Wireframe&quot;}}">
+const LINKS = [
+  { id: 'inicio', label: 'Inicio' },
+  { id: 'sobre-mi', label: 'Sobre mí' },
+  { id: 'experiencia', label: 'Experiencia' },
+  { id: 'proyectos', label: 'Proyectos' },
+  { id: 'contacto', label: 'Contacto' },
+];
+const ROLES = ['Rol profesional uno', 'Rol profesional dos', 'Rol profesional tres'];
+const DATES = ['Jul 2026 – presente', 'Ene 2025 – Jun 2026', 'Mar 2024 – presente', 'Ago 2023 – Dic 2023', 'Feb 2022 – Jul 2023', 'Sep 2021 – Ene 2022'];
+const STACK = [['Frontend', 6], ['Backend', 5], ['Bases de datos y ORM', 4], ['Herramientas e Infraestructura', 6]];
+const PROJ = [5, 3, 6, 4].map((n, i) => ({ slug: 'proyecto-' + ['alfa', 'beta', 'gamma', 'delta'][i], num: '0' + (i + 1), tags: Array.from({ length: Math.min(3, n) }, () => ({})), hasMore: n > 3, more: '+' + (n - 3) }));
+const N = PROJ.length, GAP = 28;
+const CONTACTS = [['GITHUB', '60%'], ['CORREO', '75%'], ['WHATSAPP', '50%'], ['LINKEDIN', '65%'], ['INSTAGRAM', '55%'], ['TIKTOK', '45%']].map(([label, w]) => ({ label, w }));
+const visFor = w => w >= 1024 ? 3 : w >= 680 ? 2 : 1;
+
+class Component extends DCLogic {
+  state = {
+    active: 'inicio',
+    mobile: window.innerWidth < 820,
+    vis: visFor(window.innerWidth),
+    menuOpen: false,
+    loader: (this.props.showLoader ?? true) && !/^#[a-z]/.test(location.hash) ? 'on' : 'off',
+    chatOpen: false, chatStarted: false, typing: false, chatInput: '',
+    msgs: [
+      { from: 'bot', text: 'Hola, ¿en qué puedo ayudarte?' },
+      { from: 'user', text: 'Mensaje de ejemplo del usuario' },
+    ],
+  };
+  vpRef = React.createRef(); trackRef = React.createRef(); idx = N;
+  typeRef = React.createRef(); tlRef = React.createRef(); fillRef = React.createRef(); msgsRef = React.createRef();
+  timers = [];
+
+  componentDidMount() {
+    this.reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { this.io.unobserve(e.target); this.show(e.target); }
+    }), { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    this.scan();
+    const t = this.state.loader === 'on' && !this.reduce ? 1500 : 0;
+    this.timers.push(setTimeout(() => {
+      if (this.state.loader === 'on') this.setState({ loader: 'fading' });
+      this.ready = true;
+      document.querySelectorAll('[data-rv="pending"]').forEach(el => this.io.observe(el));
+      this.checkPending();
+      this.type();
+      const h = location.hash.slice(1);
+      if (h && document.getElementById(h)) setTimeout(() => this.go(h), 60);
+    }, t));
+    this.timers.push(setTimeout(() => this.setState({ loader: 'off' }), t + 500));
+
+    this.onScroll = () => {
+      if (this.ready) this.checkPending();
+      let cur = 'inicio';
+      for (const l of LINKS) {
+        const el = document.getElementById(l.id);
+        if (el && el.getBoundingClientRect().top < window.innerHeight * 0.4) cur = l.id;
+      }
+      if (cur !== this.state.active) this.setState({ active: cur });
+      const tl = this.tlRef.current, f = this.fillRef.current;
+      if (tl && f) {
+        const r = tl.getBoundingClientRect();
+        const p = Math.min(1, Math.max(0, (window.innerHeight * 0.6 - r.top) / r.height));
+        f.style.height = (p * 100) + '%';
+      }
+    };
+    this.onResize = () => {
+      const m = window.innerWidth < 820, v = visFor(window.innerWidth);
+      if (m !== this.state.mobile || v !== this.state.vis) this.setState({ mobile: m, vis: v, menuOpen: m ? this.state.menuOpen : false }, () => this.setPos(false));
+      else this.setPos(false);
+      this.onScroll();
+    };
+    this.onOver = e => {
+      const g = e.target.closest ? e.target.closest('[data-hg]') : null;
+      if (g === this.hg) return;
+      if (this.hg) this.hg.querySelectorAll('[data-hfx]').forEach(c => { c.style.transform = ''; });
+      this.hg = g;
+      if (g) g.querySelectorAll('[data-hfx]').forEach(c => { c.style.transform = c.getAttribute('data-hfx'); });
+    };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    window.addEventListener('resize', this.onResize);
+    document.addEventListener('pointerover', this.onOver);
+    this.onScroll();
+    this.setPos(false);
+    this.timers.push(setTimeout(() => this.setPos(false), 300));
+  }
+
+  componentDidUpdate() {
+    this.scan();
+    const m = this.msgsRef.current;
+    if (m) m.scrollTop = m.scrollHeight;
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.wrapT);
+    this.timers.forEach(clearTimeout); clearTimeout(this.tt);
+    window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('resize', this.onResize);
+    document.removeEventListener('pointerover', this.onOver);
+    this.io && this.io.disconnect();
+  }
+
+  scan() {
+    document.querySelectorAll('[data-reveal]:not([data-rv])').forEach(el => {
+      if (this.reduce) { el.setAttribute('data-rv', 'done'); return; }
+      const p = el.parentElement;
+      let d = 0;
+      if (p && p.hasAttribute('data-stagger')) {
+        d = [...p.children].filter(c => c.hasAttribute('data-reveal')).indexOf(el) * 100;
+      }
+      el.dataset.delay = d;
+      el.style.opacity = '0'; el.style.filter = 'blur(8px)'; el.style.transform = 'translateY(30px)';
+      el.setAttribute('data-rv', 'pending');
+      if (this.ready) this.io.observe(el);
+    });
+    if (this.ready) this.checkPending();
+  }
+
+  step() {
+    const t = this.trackRef.current, c = t && t.children[0];
+    return c ? c.getBoundingClientRect().width + GAP : 0;
+  }
+
+  setPos(anim, extra = 0) {
+    const t = this.trackRef.current; if (!t) return;
+    t.style.transition = anim && !this.reduce ? 'transform .5s cubic-bezier(.2,.8,.2,1)' : 'none';
+    t.style.transform = 'translateX(' + (-this.idx * this.step() + extra) + 'px)';
+  }
+
+  normalize() {
+    if (this.idx >= 2 * N) this.idx -= N; else if (this.idx < N) this.idx += N; else return;
+    this.setPos(false);
+    const t = this.trackRef.current; if (t) void t.offsetWidth;
+  }
+
+  move(d) {
+    clearTimeout(this.wrapT);
+    this.normalize();
+    this.idx += d;
+    this.setPos(true);
+    this.wrapT = setTimeout(() => this.normalize(), this.reduce ? 0 : 520);
+  }
+
+  dragStart(e) {
+    if (e.button && e.button !== 0) return;
+    if (e.target.closest && e.target.closest('button,a')) return;
+    clearTimeout(this.wrapT);
+    this.normalize();
+    const x0 = e.clientX; let dx = 0;
+    const vp = this.vpRef.current; if (vp) vp.style.cursor = 'grabbing';
+    const mv = ev => { dx = ev.clientX - x0; this.setPos(false, dx); };
+    const up = () => {
+      window.removeEventListener('pointermove', mv);
+      window.removeEventListener('pointerup', up);
+      window.removeEventListener('pointercancel', up);
+      if (vp) vp.style.cursor = 'grab';
+      const s = this.step() || 1;
+      let d = Math.round(-dx / s);
+      if (d === 0 && Math.abs(dx) > 50) d = dx < 0 ? 1 : -1;
+      d = Math.max(-2, Math.min(2, d));
+      if (Math.abs(dx) > 5) {
+        const block = ev => { ev.preventDefault(); ev.stopPropagation(); };
+        window.addEventListener('click', block, { capture: true, once: true });
+        setTimeout(() => window.removeEventListener('click', block, true), 60);
+      }
+      this.move(d);
+    };
+    window.addEventListener('pointermove', mv);
+    window.addEventListener('pointerup', up);
+    window.addEventListener('pointercancel', up);
+  }
+
+  checkPending() {
+    const h = window.innerHeight;
+    document.querySelectorAll('[data-rv="pending"]').forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.top < h * 0.92) { this.io.unobserve(el); this.show(el); }
+    });
+  }
+
+  show(el) {
+    const d = +el.dataset.delay || 0;
+    el.style.transition = `opacity .6s ease-out ${d}ms, filter .6s ease-out ${d}ms, transform .6s ease-out ${d}ms`;
+    void el.offsetWidth;
+    el.style.opacity = '1'; el.style.filter = 'blur(0)'; el.style.transform = 'translateY(0)';
+    el.setAttribute('data-rv', 'done');
+    setTimeout(() => { el.style.transition = ''; el.style.filter = ''; el.style.transform = ''; }, 650 + d);
+  }
+
+  type() {
+    const el0 = this.typeRef.current;
+    if (!el0) return;
+    if (this.reduce) { el0.textContent = ROLES[0]; return; }
+    let r = 0, i = 0, del = false;
+    const step = () => {
+      const el = this.typeRef.current; if (!el) return;
+      const w = ROLES[r];
+      if (!del) {
+        i++;
+        if (i >= w.length) { el.textContent = w; del = true; this.tt = setTimeout(step, 1500); return; }
+      } else {
+        i--;
+        if (i <= 0) { i = 0; del = false; r = (r + 1) % ROLES.length; el.textContent = ''; this.tt = setTimeout(step, 300); return; }
+      }
+      el.textContent = w.slice(0, i);
+      this.tt = setTimeout(step, del ? 40 : 85);
+    };
+    step();
+  }
+
+  go(id) {
+    this.setState({ menuOpen: false });
+    const el = document.getElementById(id); if (!el) return;
+    const top = id === 'inicio' ? 0 : el.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({ top, behavior: this.reduce ? 'auto' : 'smooth' });
+  }
+
+  reply() {
+    this.setState({ typing: true });
+    this.timers.push(setTimeout(() => this.setState(s => ({
+      typing: false,
+      msgs: [...s.msgs, { from: 'bot', text: 'Respuesta automática de ejemplo. Texto breve de dos líneas.' }],
+    })), 1600));
+  }
+
+  renderVals() {
+    const s = this.state, m = s.mobile;
+    return {
+      showTags: this.props.showTags ?? true,
+      loaderVisible: s.loader !== 'off',
+      loaderOpacity: s.loader === 'on' ? 1 : 0,
+      navLinksDisplay: m ? 'none' : 'flex',
+      burgerDisplay: m ? 'flex' : 'none',
+      menuVisible: m && s.menuOpen,
+      toggleMenu: () => this.setState(x => ({ menuOpen: !x.menuOpen })),
+      links: LINKS.map(l => {
+        const on = s.active === l.id;
+        return { ...l, color: on ? '#333' : '#9a9a9a', weight: on ? 700 : 500, bg: on ? '#f0f0f0' : 'transparent',
+          go: e => { e.preventDefault(); this.go(l.id); } };
+      }),
+      goHome: e => { e.preventDefault(); this.go('inicio'); },
+      goProjects: e => { e.preventDefault(); this.go('proyectos'); },
+      noop: e => e.preventDefault(),
+      typeRef: this.typeRef, tlRef: this.tlRef, fillRef: this.fillRef, msgsRef: this.msgsRef,
+      datos: ['70%', '55%', '80%', '60%', '75%', '50%'].map(w => ({ w })),
+      lineLeft: m ? '16px' : '50%',
+      cardW: m ? 'calc(100% - 44px)' : 'calc(50% - 44px)',
+      exp: DATES.map((date, i) => ({ date, justify: m ? 'flex-end' : (i % 2 ? 'flex-end' : 'flex-start') })),
+      stack: STACK.map(([cat, n]) => {
+        const cols = m ? 3 : n;
+        return { cat, cols, tiles: Array.from({ length: n }, (_, i) => ({ border: i % cols ? '1px solid #e5e5e5' : 'none' })) };
+      }),
+      slides: [...PROJ, ...PROJ, ...PROJ],
+      slideBasis: s.vis === 3 ? 'calc((100% - 56px) / 3)' : s.vis === 2 ? 'calc((100% - 28px) / 2)' : '100%',
+      vpRef: this.vpRef, trackRef: this.trackRef,
+      prevSlide: () => this.move(-1),
+      nextSlide: () => this.move(1),
+      onDragStart: e => this.dragStart(e),
+      contacts: CONTACTS,
+      chatOpacity: s.chatOpen ? 1 : 0,
+      chatTransform: s.chatOpen ? 'scale(1)' : 'scale(.85) translateY(12px)',
+      chatPointer: s.chatOpen ? 'auto' : 'none',
+      toggleChat: () => {
+        const open = !this.state.chatOpen;
+        this.setState({ chatOpen: open });
+        if (open && !this.state.chatStarted) { this.setState({ chatStarted: true }); this.reply(); }
+      },
+      msgs: s.msgs.map(x => x.from === 'user'
+        ? { ...x, align: 'flex-end', bg: '#333', color: '#fff', border: '#333', radius: '14px 14px 4px 14px' }
+        : { ...x, align: 'flex-start', bg: '#fff', color: '#333', border: '#e5e5e5', radius: '14px 14px 14px 4px' }),
+      typing: s.typing,
+      chatInput: s.chatInput,
+      onChatInput: e => this.setState({ chatInput: e.target.value }),
+      onChatKey: e => { if (e.key === 'Enter') this.send(); },
+      send: () => this.send(),
+    };
+  }
+
+  send() {
+    const t = this.state.chatInput.trim() || 'Mensaje de ejemplo';
+    this.setState(s => ({ msgs: [...s.msgs, { from: 'user', text: t }], chatInput: '' }));
+    this.reply();
+  }
+}
+</script>
+</body>
+</html>
